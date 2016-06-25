@@ -1,0 +1,23 @@
+{
+  "name" : "tvSleuth",
+  "version" : "0.0.1",
+  "description" : "Keep track of aired TV programs",
+  "repository" : {
+    "type" : "git",
+    "url" : "git://github.com/riencroonenborghs/tv-sleuth.git"
+  },
+  "keywords" : ["tv", "programs", "tracker"],
+  "readmeFilename" : "README.md",
+  "author" : "Rien Croonenborghs",
+  "license": "MIT",
+  "dependencies" : {
+    "gulp" :  "latest",
+    "gulp-coffee" : "latest",
+    "gulp-util" : "latest",
+    "del" : "latest",
+    "jquery": "latest",
+    "angular-material": "latest",
+    "angular-route": "latest",
+    "angular-material-icons": "latest"
+  }
+}

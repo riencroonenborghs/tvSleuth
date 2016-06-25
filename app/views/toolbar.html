@@ -1,0 +1,35 @@
+<md-toolbar>
+  <div class="md-toolbar-tools">
+    <img src="app/assets/images/app-white.png" class="pointer" ng-click="visit('/tv_programs')" />
+    <h2>
+      <span>TV Sleuth</span>
+    </h2>
+    <span flex></span>
+    <md-menu md-position-mode="target-right target" ng-if="theMovieDB.apiKey">
+      <md-button aria-label="Open Menu" class="md-icon-button" ng-click="$mdOpenMenu($event)">
+        <ng-md-icon icon="more_vert" size="24" style="fill: white;"></ng-md-icon>
+      </md-button>
+      <md-menu-content width="4">
+        <md-menu-item>
+          <md-button aria-label="My TV Programs" ng-click="visit('/tv_programs')">
+            <ng-md-icon icon="view_list"></ng-md-icon>
+            My TV Programs
+          </md-button>
+        </md-menu-item>
+        <md-menu-item>
+          <md-button aria-label="Search TV Programs" ng-click="visit('/tv_programs/search')">
+            <ng-md-icon icon="search"></ng-md-icon>
+            Search TV Programs
+          </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button aria-label="Settings" ng-click="visit('/settings')">
+            <ng-md-icon icon="settings"></ng-md-icon>
+            Settings
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+  </div>
+</md-toolbar>

@@ -1,0 +1,16 @@
+body { width: 450px; min-height: 250px; }
+
+#loading-screen { padding: 40px; }
+#loading-screen #message { padding-top: 16px; color: #2196f3; }
+
+.pointer { cursor: pointer; }
+.stars { color: #2196f3; font-size: 85%; }
+
+/* override material default padding/margins */
+md-menu-item ng-md-icon { margin-left: 0; margin-right: 16px; }
+md-toolbar .md-toolbar-tools img { width: 40px; padding-right: 16px; }
+md-content.layout-padding { padding-top: 0; padding-bottom: 0; }
+md-input-container { margin-bottom: : 0; }
+h2 { margin-top: 0; margin-bottom: 0; }
+md-list { height: 350px; overflow: auto; }
+md-list-item { padding-bottom: 16px !important; }

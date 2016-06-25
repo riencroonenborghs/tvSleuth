@@ -38,8 +38,8 @@ app.controller "AppController", ["$scope", "$location", "$timeout", "tvProgramSe
   ), 1000
 ]
 
-app.controller "BackgroundAppController", ["$scope", "$location", "tvProgramService", "$mdToast", "$timeout",
-($scope, $location, tvProgramService, $mdToast, $timeout) ->  
+app.controller "BackgroundAppController", ["$scope", "$location", "tvProgramService", "$mdToast", "$timeout", "$interval",
+($scope, $location, tvProgramService, $mdToast, $timeout, $interval) ->  
   $scope.tvPrograms = []
 
   # load API key from Chrome local storage
@@ -52,4 +52,5 @@ app.controller "BackgroundAppController", ["$scope", "$location", "tvProgramServ
       tvProgramService.loadTVPrograms callback
   
   $timeout (-> tvProgramService.checkPrograms $scope.tvPrograms), 5000
+  $interval (-> tvProgramService.checkPrograms $scope.tvPrograms), 1000 * 3600
 ]

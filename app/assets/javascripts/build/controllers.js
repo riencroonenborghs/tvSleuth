@@ -55,7 +55,7 @@ app.controller("AppController", [
 ]);
 
 app.controller("BackgroundAppController", [
-  "$scope", "$location", "tvProgramService", "$mdToast", "$timeout", function($scope, $location, tvProgramService, $mdToast, $timeout) {
+  "$scope", "$location", "tvProgramService", "$mdToast", "$timeout", "$interval", function($scope, $location, tvProgramService, $mdToast, $timeout, $interval) {
     $scope.tvPrograms = [];
     chrome.storage.local.get("tvSleuth", function(data) {
       var callback;
@@ -68,8 +68,11 @@ app.controller("BackgroundAppController", [
         return tvProgramService.loadTVPrograms(callback);
       }
     });
-    return $timeout((function() {
+    $timeout((function() {
       return tvProgramService.checkPrograms($scope.tvPrograms);
     }), 5000);
+    return $interval((function() {
+      return tvProgramService.checkPrograms($scope.tvPrograms);
+    }), 1000 * 3600);
   }
 ]);

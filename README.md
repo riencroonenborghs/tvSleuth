@@ -22,3 +22,19 @@ The extension comes pre-built, but you can easily build it yourself. It uses 'gu
 ## Requirements
 
 You'll need an API key from https://www.themoviedb.org.
+
+## Screenshots
+#### Icon, Badge & Title
+![Icon, Badge & Title](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/master/screenshots/01-icon-badge-title.png "Icon, Badge & Title")
+
+#### Loading Screen
+![Loading](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/master/screenshots/02-loading.png "Loading")
+
+#### Your TV Programs
+![List](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/master/screenshots/03-list.png "List")
+
+#### Search TV Programs
+![Search](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/master/screenshots/04-search.png "Search")
+
+#### Settings Screen
+![Settings](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/master/screenshots/05-settings.png "Settings")

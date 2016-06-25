@@ -27,6 +27,42 @@ app.service "tvProgramService", [ "$q", "$http", "$rootScope", ($q, $http, $root
           $rootScope.$broadcast "reload.tvPrograms"
         )
   airingToday: (page = 1) -> @_sendRequest "#{@apiPath}/tv/airing_today?api_key=#{tvSleuth.theMovieDB.apiKey}&page=#{page}"
+  checkPrograms: (tvPrograms) ->
+    totalBadgeNumber  = 0
+    airedTvPrograms   = ["TV Sleuth"]
+    chrome.browserAction.setBadgeText {text: ""}
+    chrome.browserAction.setBadgeBackgroundColor {color: [33,150,243,255]}
+  
+    chrome.browserAction.setBadgeText {text: ""}
+    airedTvPrograms   = ["TV Sleuth"]
+    totalBadgeNumber  = 0
+    @airingToday(1).then (body) =>
+      checkAgainstTvPrograms body.results
+      for _page in [2..body.total_pages]
+        @airingToday(_page).then (body) =>
+          checkAgainstTvPrograms body.results
+
+    checkAgainstTvPrograms = (tvProgramsAiredToday) ->
+      for tvProgramAiredToday in tvProgramsAiredToday
+        for tvProgram in tvPrograms
+          if tvProgram.id == tvProgramAiredToday.id
+            ++totalBadgeNumber
+            chrome.browserAction.setBadgeText {text: totalBadgeNumber.toString()}
+            if airedTvPrograms.length == 1
+              airedTvPrograms.push ""
+              airedTvPrograms.push "Aired today:"
+            airedTvPrograms.push "- #{tvProgram.name}"
+            chrome.browserAction.setTitle {title: airedTvPrograms.join("\n")}
+  loadTVPrograms: (callback) ->
+    tvPrograms = []
+    chrome.storage.local.get "tvSleuth", (data) =>
+      if data.tvSleuth
+        data = JSON.parse data.tvSleuth
+        tvPrograms = []
+        for id in (data.the_movie_db.tvPrograms || [])
+          @get(id).then (data) =>
+            tvPrograms.push data
+        callback tvPrograms if callback
   _sendRequest: (url) ->
     deferred = $q.defer()
     options = 

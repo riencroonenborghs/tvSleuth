@@ -9,21 +9,13 @@ app.controller("TVProgramsIndexController", [
     var loadTVPrograms;
     $scope.tvPrograms = [];
     loadTVPrograms = function() {
-      return chrome.storage.local.get("tvSleuth", function(data) {
-        var i, id, len, ref;
-        if (data.tvSleuth) {
-          data = JSON.parse(data.tvSleuth);
-          $scope.tvPrograms = [];
-          ref = data.the_movie_db.tvPrograms || [];
-          for (i = 0, len = ref.length; i < len; i++) {
-            id = ref[i];
-            tvProgramService.get(id).then(function(data) {
-              return $scope.tvPrograms.push(data);
-            });
-          }
-          return tvSleuth.tvPrograms = $scope.tvPrograms;
-        }
-      });
+      var callback;
+      callback = function(tvPrograms) {
+        $scope.tvPrograms = tvPrograms;
+        tvSleuth.tvPrograms = tvPrograms;
+        return tvProgramService.checkPrograms($scope.tvPrograms);
+      };
+      return tvProgramService.loadTVPrograms(callback);
     };
     loadTVPrograms();
     $scope.$on("reload.tvPrograms", function() {

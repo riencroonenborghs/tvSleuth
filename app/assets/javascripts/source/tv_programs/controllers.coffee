@@ -6,16 +6,12 @@ tvSleuth.tvPrograms = []
 
 app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", ($scope, tvProgramService) ->  
   $scope.tvPrograms = []
-  loadTVPrograms = ->
-    # load saved TV programs
-    chrome.storage.local.get "tvSleuth", (data) ->      
-      if data.tvSleuth
-        data = JSON.parse data.tvSleuth
-        $scope.tvPrograms = []
-        for id in (data.the_movie_db.tvPrograms || [])
-          tvProgramService.get(id).then (data) ->
-            $scope.tvPrograms.push data
-        tvSleuth.tvPrograms = $scope.tvPrograms
+  loadTVPrograms    = ->
+    callback = (tvPrograms) ->
+      $scope.tvPrograms   = tvPrograms
+      tvSleuth.tvPrograms = tvPrograms
+      tvProgramService.checkPrograms $scope.tvPrograms
+    tvProgramService.loadTVPrograms callback
   loadTVPrograms()
  
   $scope.$on "reload.tvPrograms", -> loadTVPrograms()

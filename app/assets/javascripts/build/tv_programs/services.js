@@ -57,6 +57,90 @@ app.service("tvProgramService", [
         }
         return this._sendRequest(this.apiPath + "/tv/airing_today?api_key=" + tvSleuth.theMovieDB.apiKey + "&page=" + page);
       },
+      checkPrograms: function(tvPrograms) {
+        var airedTvPrograms, checkAgainstTvPrograms, totalBadgeNumber;
+        totalBadgeNumber = 0;
+        airedTvPrograms = ["TV Sleuth"];
+        chrome.browserAction.setBadgeText({
+          text: ""
+        });
+        chrome.browserAction.setBadgeBackgroundColor({
+          color: [33, 150, 243, 255]
+        });
+        chrome.browserAction.setBadgeText({
+          text: ""
+        });
+        airedTvPrograms = ["TV Sleuth"];
+        totalBadgeNumber = 0;
+        this.airingToday(1).then((function(_this) {
+          return function(body) {
+            var _page, i, ref, results;
+            checkAgainstTvPrograms(body.results);
+            results = [];
+            for (_page = i = 2, ref = body.total_pages; 2 <= ref ? i <= ref : i >= ref; _page = 2 <= ref ? ++i : --i) {
+              results.push(_this.airingToday(_page).then(function(body) {
+                return checkAgainstTvPrograms(body.results);
+              }));
+            }
+            return results;
+          };
+        })(this));
+        return checkAgainstTvPrograms = function(tvProgramsAiredToday) {
+          var i, len, results, tvProgram, tvProgramAiredToday;
+          results = [];
+          for (i = 0, len = tvProgramsAiredToday.length; i < len; i++) {
+            tvProgramAiredToday = tvProgramsAiredToday[i];
+            results.push((function() {
+              var j, len1, results1;
+              results1 = [];
+              for (j = 0, len1 = tvPrograms.length; j < len1; j++) {
+                tvProgram = tvPrograms[j];
+                if (tvProgram.id === tvProgramAiredToday.id) {
+                  ++totalBadgeNumber;
+                  chrome.browserAction.setBadgeText({
+                    text: totalBadgeNumber.toString()
+                  });
+                  if (airedTvPrograms.length === 1) {
+                    airedTvPrograms.push("");
+                    airedTvPrograms.push("Aired today:");
+                  }
+                  airedTvPrograms.push("- " + tvProgram.name);
+                  results1.push(chrome.browserAction.setTitle({
+                    title: airedTvPrograms.join("\n")
+                  }));
+                } else {
+                  results1.push(void 0);
+                }
+              }
+              return results1;
+            })());
+          }
+          return results;
+        };
+      },
+      loadTVPrograms: function(callback) {
+        var tvPrograms;
+        tvPrograms = [];
+        return chrome.storage.local.get("tvSleuth", (function(_this) {
+          return function(data) {
+            var i, id, len, ref;
+            if (data.tvSleuth) {
+              data = JSON.parse(data.tvSleuth);
+              tvPrograms = [];
+              ref = data.the_movie_db.tvPrograms || [];
+              for (i = 0, len = ref.length; i < len; i++) {
+                id = ref[i];
+                _this.get(id).then(function(data) {
+                  return tvPrograms.push(data);
+                });
+              }
+              if (callback) {
+                return callback(tvPrograms);
+              }
+            }
+          };
+        })(this));
+      },
       _sendRequest: function(url) {
         var deferred, failure, options, success;
         deferred = $q.defer();

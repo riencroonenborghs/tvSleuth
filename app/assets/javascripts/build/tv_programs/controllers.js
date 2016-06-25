@@ -5,7 +5,7 @@ app = angular.module("tvPrograms.controllers", []);
 tvSleuth.tvPrograms = [];
 
 app.controller("TVProgramsIndexController", [
-  "$scope", "tvProgramService", function($scope, tvProgramService) {
+  "$scope", "tvProgramService", "theMovieDBAPI", function($scope, tvProgramService, theMovieDBAPI) {
     var loadTVPrograms;
     $scope.tvPrograms = [];
     loadTVPrograms = function() {
@@ -22,13 +22,13 @@ app.controller("TVProgramsIndexController", [
       return loadTVPrograms();
     });
     return $scope.removeFromMyList = function(tvProgram) {
-      return tvProgramService.remove(tvProgram);
+      return theMovieDBAPI.remove(tvProgram);
     };
   }
 ]);
 
 app.controller("TVProgramsSearchController", [
-  "$scope", "tvProgramService", "$timeout", function($scope, tvProgramService, $timeout) {
+  "$scope", "$timeout", "theMovieDBAPI", function($scope, $timeout, theMovieDBAPI) {
     $scope.queryResults = {};
     $scope.model = {
       query: ""
@@ -38,7 +38,7 @@ app.controller("TVProgramsSearchController", [
         $scope.queryResults = {};
         return;
       }
-      return tvProgramService.search($scope.model.query).then(function(data) {
+      return theMovieDBAPI.search($scope.model.query).then(function(data) {
         var i, len, program, ref, results;
         $scope.queryResults = data;
         ref = $scope.queryResults.results;
@@ -63,7 +63,7 @@ app.controller("TVProgramsSearchController", [
       });
     };
     $scope.addToMyList = function(tvProgram) {
-      return tvProgramService.add(tvProgram);
+      return theMovieDBAPI.add(tvProgram);
     };
     return $timeout((function() {
       return $("#search #query").focus();

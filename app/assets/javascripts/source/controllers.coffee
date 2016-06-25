@@ -3,8 +3,8 @@ app = angular.module "controllers", []
 tvSleuth.theMovieDB =
   apiKey: null
 
-app.controller "AppController", ["$scope", "$location", "$timeout", "tvProgramService", "$mdToast",
-($scope, $location, $timeout, tvProgramService, $mdToast) ->  
+app.controller "AppController", ["$scope", "$location", "$timeout", "$mdToast",
+($scope, $location, $timeout, $mdToast) ->  
   $scope.theMovieDB = tvSleuth.theMovieDB
   $scope.visit = (path) ->     
     $location.path path

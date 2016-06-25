@@ -7,7 +7,7 @@ tvSleuth.theMovieDB = {
 };
 
 app.controller("AppController", [
-  "$scope", "$location", "$timeout", "tvProgramService", "$mdToast", function($scope, $location, $timeout, tvProgramService, $mdToast) {
+  "$scope", "$location", "$timeout", "$mdToast", function($scope, $location, $timeout, $mdToast) {
     var loadSettings;
     $scope.theMovieDB = tvSleuth.theMovieDB;
     $scope.visit = function(path) {

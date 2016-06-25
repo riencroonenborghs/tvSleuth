@@ -3,7 +3,7 @@ var app,
 
 app = angular.module("tvPrograms.services", []);
 
-app.service("tvProgramService", [
+app.service("theMovieDBAPI", [
   "$q", "$http", "$rootScope", function($q, $http, $rootScope) {
     return {
       apiPath: "http://api.themoviedb.org/3",
@@ -57,6 +57,57 @@ app.service("tvProgramService", [
         }
         return this._sendRequest(this.apiPath + "/tv/airing_today?api_key=" + tvSleuth.theMovieDB.apiKey + "&page=" + page);
       },
+      _sendRequest: function(url) {
+        var deferred, failure, options, success;
+        deferred = $q.defer();
+        options = {
+          method: "GET",
+          url: url,
+          headers: {
+            "Accept": "application/json"
+          }
+        };
+        success = (function(_this) {
+          return function(response) {
+            deferred.resolve(response.data);
+          };
+        })(this);
+        failure = function(response) {
+          deferred.reject(response.data);
+        };
+        $http(options).then(success, failure);
+        return deferred.promise;
+      }
+    };
+  }
+]);
+
+app.service("tvProgramService", [
+  "theMovieDBAPI", function(theMovieDBAPI) {
+    return {
+      loadTVPrograms: function(callback) {
+        var tvPrograms;
+        tvPrograms = [];
+        return chrome.storage.local.get("tvSleuth", (function(_this) {
+          return function(data) {
+            var i, id, len, ref;
+            if (data.tvSleuth) {
+              data = JSON.parse(data.tvSleuth);
+              tvPrograms = [];
+              ref = data.the_movie_db.tvPrograms || [];
+              for (i = 0, len = ref.length; i < len; i++) {
+                id = ref[i];
+                theMovieDBAPI.get(id).then(function(data) {
+                  return tvPrograms.push(data);
+                });
+              }
+              if (callback) {
+                return callback(tvPrograms);
+              }
+            }
+          };
+        })(this));
+      },
       checkPrograms: function(tvPrograms) {
         var airedTvPrograms, checkAgainstTvPrograms, totalBadgeNumber;
         totalBadgeNumber = 0;
@@ -67,18 +118,13 @@ app.service("tvProgramService", [
         chrome.browserAction.setBadgeBackgroundColor({
           color: [33, 150, 243, 255]
         });
-        chrome.browserAction.setBadgeText({
-          text: ""
-        });
-        airedTvPrograms = ["TV Sleuth"];
-        totalBadgeNumber = 0;
-        this.airingToday(1).then((function(_this) {
+        theMovieDBAPI.airingToday(1).then((function(_this) {
           return function(body) {
             var _page, i, ref, results;
             checkAgainstTvPrograms(body.results);
             results = [];
             for (_page = i = 2, ref = body.total_pages; 2 <= ref ? i <= ref : i >= ref; _page = 2 <= ref ? ++i : --i) {
-              results.push(_this.airingToday(_page).then(function(body) {
+              results.push(theMovieDBAPI.airingToday(_page).then(function(body) {
                 return checkAgainstTvPrograms(body.results);
               }));
             }
@@ -117,50 +163,6 @@ app.service("tvProgramService", [
           }
           return results;
         };
-      },
-      loadTVPrograms: function(callback) {
-        var tvPrograms;
-        tvPrograms = [];
-        return chrome.storage.local.get("tvSleuth", (function(_this) {
-          return function(data) {
-            var i, id, len, ref;
-            if (data.tvSleuth) {
-              data = JSON.parse(data.tvSleuth);
-              tvPrograms = [];
-              ref = data.the_movie_db.tvPrograms || [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                id = ref[i];
-                _this.get(id).then(function(data) {
-                  return tvPrograms.push(data);
-                });
-              }
-              if (callback) {
-                return callback(tvPrograms);
-              }
-            }
-          };
-        })(this));
-      },
-      _sendRequest: function(url) {
-        var deferred, failure, options, success;
-        deferred = $q.defer();
-        options = {
-          method: "GET",
-          url: url,
-          headers: {
-            "Accept": "application/json"
-          }
-        };
-        success = (function(_this) {
-          return function(response) {
-            deferred.resolve(response.data);
-          };
-        })(this);
-        failure = function(response) {
-          deferred.reject(response.data);
-        };
-        $http(options).then(success, failure);
-        return deferred.promise;
       }
     };
   }

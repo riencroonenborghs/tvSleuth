@@ -4,7 +4,8 @@ app = angular.module "tvPrograms.controllers", []
 # mainly for search to display + button or not
 tvSleuth.tvPrograms = []
 
-app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", ($scope, tvProgramService) ->  
+app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", "theMovieDBAPI", 
+($scope, tvProgramService, theMovieDBAPI) ->
   $scope.tvPrograms = []
   loadTVPrograms    = ->
     callback = (tvPrograms) ->
@@ -16,10 +17,11 @@ app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", ($sco
  
   $scope.$on "reload.tvPrograms", -> loadTVPrograms()
 
-  $scope.removeFromMyList = (tvProgram) -> tvProgramService.remove(tvProgram)
+  $scope.removeFromMyList = (tvProgram) -> theMovieDBAPI.remove(tvProgram)
 ]
 
-app.controller "TVProgramsSearchController", ["$scope", "tvProgramService", "$timeout", ($scope, tvProgramService, $timeout) ->
+app.controller "TVProgramsSearchController", ["$scope", "$timeout", "theMovieDBAPI",
+($scope, $timeout, theMovieDBAPI) ->
   $scope.queryResults = {}
 
   $scope.model =
@@ -29,7 +31,7 @@ app.controller "TVProgramsSearchController", ["$scope", "tvProgramService", "$ti
     if $scope.model.query.length == 0
       $scope.queryResults = {}
       return
-    tvProgramService.search($scope.model.query).then (data) ->
+    theMovieDBAPI.search($scope.model.query).then (data) ->
       $scope.queryResults = data
       for program in $scope.queryResults.results
         program.inMyList = do =>
@@ -37,7 +39,7 @@ app.controller "TVProgramsSearchController", ["$scope", "tvProgramService", "$ti
             return true if item.id == program.id
           return false
 
-  $scope.addToMyList = (tvProgram) -> tvProgramService.add(tvProgram)
+  $scope.addToMyList = (tvProgram) -> theMovieDBAPI.add(tvProgram)
 
   $timeout (-> $("#search #query").focus()), 500
 ]

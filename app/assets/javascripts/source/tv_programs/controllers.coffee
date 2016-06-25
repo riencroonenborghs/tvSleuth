@@ -22,22 +22,27 @@ app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", "theM
 
 app.controller "TVProgramsSearchController", ["$scope", "$timeout", "theMovieDBAPI",
 ($scope, $timeout, theMovieDBAPI) ->
-  $scope.queryResults = {}
+  # $scope.queryResults = {}
 
   $scope.model =
     query: ""
 
-  $scope.search = ->
-    if $scope.model.query.length == 0
-      $scope.queryResults = {}
-      return
-    theMovieDBAPI.search($scope.model.query).then (data) ->
-      $scope.queryResults = data
-      for program in $scope.queryResults.results
-        program.inMyList = do =>
-          for item in tvSleuth.tvPrograms
-            return true if item.id == program.id
-          return false
+  $scope.service =
+    page: 1
+    queryData: []
+    search: ->
+      theMovieDBAPI.search($scope.model.query, @page).then (data) =>
+        # lookup if programs in data are in my list of programs
+        for program in data.results
+          program.inMyList = do =>
+            for item in tvSleuth.tvPrograms
+              return true if item.id == program.id
+            return false
+        # set full data when on first page, otherwise just concat the actual results
+        if @page == 1
+          @queryData = data
+        else
+          @queryData.results = @queryData.results.concat data.results
 
   $scope.addToMyList = (tvProgram) -> theMovieDBAPI.add(tvProgram)
 

@@ -11,7 +11,8 @@ app = angular.module "tvSleuth", [
   "controllers",
   "settings.controllers",
   "tvPrograms.controllers",
-  "tvPrograms.services"
+  "tvPrograms.services",
+  "tvPrograms.directives"
 ]
 
 app.config ($mdThemingProvider) ->

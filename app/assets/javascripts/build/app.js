@@ -2,7 +2,7 @@ var app, tvSleuth;
 
 tvSleuth = window.tvSleuth || (window.tvSleuth = {});
 
-app = angular.module("tvSleuth", ["ngAria", "ngAnimate", "ngMaterial", "ngMdIcons", "ngRoute", "controllers", "settings.controllers", "tvPrograms.controllers", "tvPrograms.services"]);
+app = angular.module("tvSleuth", ["ngAria", "ngAnimate", "ngMaterial", "ngMdIcons", "ngRoute", "controllers", "settings.controllers", "tvPrograms.controllers", "tvPrograms.services", "tvPrograms.directives"]);
 
 app.config(function($mdThemingProvider) {
   return $mdThemingProvider.theme("default").primaryPalette("blue").accentPalette("green");

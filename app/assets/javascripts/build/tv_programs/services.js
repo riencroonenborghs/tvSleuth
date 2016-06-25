@@ -7,8 +7,11 @@ app.service("theMovieDBAPI", [
   "$q", "$http", "$rootScope", function($q, $http, $rootScope) {
     return {
       apiPath: "http://api.themoviedb.org/3",
-      search: function(query) {
-        return this._sendRequest(this.apiPath + "/search/tv?api_key=" + tvSleuth.theMovieDB.apiKey + "&query=" + query);
+      search: function(query, page) {
+        if (page == null) {
+          page = 1;
+        }
+        return this._sendRequest(this.apiPath + "/search/tv?api_key=" + tvSleuth.theMovieDB.apiKey + "&query=" + query + "&page=" + page);
       },
       get: function(tvProgramID) {
         return this._sendRequest(this.apiPath + "/tv/" + tvProgramID + "?api_key=" + tvSleuth.theMovieDB.apiKey);

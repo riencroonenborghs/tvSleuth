@@ -2,7 +2,7 @@ app = angular.module "tvPrograms.services", []
 
 app.service "theMovieDBAPI", [ "$q", "$http", "$rootScope", ($q, $http, $rootScope) ->
   apiPath: "http://api.themoviedb.org/3"
-  search: (query) -> @_sendRequest "#{@apiPath}/search/tv?api_key=#{tvSleuth.theMovieDB.apiKey}&query=#{query}"
+  search: (query, page = 1) -> @_sendRequest "#{@apiPath}/search/tv?api_key=#{tvSleuth.theMovieDB.apiKey}&query=#{query}&page=#{page}"
   get: (tvProgramID) -> @_sendRequest "#{@apiPath}/tv/#{tvProgramID}?api_key=#{tvSleuth.theMovieDB.apiKey}"
   add: (tvProgram) ->
     chrome.storage.local.get "tvSleuth", (data) ->      

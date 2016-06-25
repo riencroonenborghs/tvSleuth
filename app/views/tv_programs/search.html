@@ -3,18 +3,18 @@
 <md-content layout-padding>
   <md-input-container layout="row" id="search">
     <label>Query</label>
-    <input id="query" type="text" ng-model="model.query" ng-change="search()" ng-model-options="{debounce:500}" />
+    <input id="query" type="text" ng-model="model.query" ng-change="service.search()" ng-model-options="{debounce:500}" />
   </md-input-container>
 </md-content>
 
-<md-content layout-padding ng-if="queryResults.total_results > 0">
+<md-content layout-padding ng-if="service.queryData.total_results > 0">
   <h3>
-    Found {{queryResults.total_results}}
-    <ng-pluralize count="queryResults.total_results" when="{'1':'program','other':'programs'}"></ng-pluralize>
+    Found {{service.queryData.total_results}}
+    <ng-pluralize count="service.queryData.total_results" when="{'1':'program','other':'programs'}"></ng-pluralize>
   </h3>
 
-  <md-list ng-if="queryResults.results.length">
-    <md-list-item class="md-2-line" ng-repeat="tvProgram in queryResults.results">
+  <md-list ng-if="service.queryData.results.length">
+    <md-list-item class="md-2-line" ng-repeat="tvProgram in service.queryData.results">
       <img ng-src="https://image.tmdb.org/t/p/w185{{tvProgram.poster_path}}" class="md-avatar" alt="{{tvProgram.original_name}}" />
       <div class="md-list-item-text" layout="column">
         <h3>
@@ -32,4 +32,6 @@
       </div>
     </md-list-item>
   </md-list>
+
+  <load-more service="service"></load-more>
 </md-content>

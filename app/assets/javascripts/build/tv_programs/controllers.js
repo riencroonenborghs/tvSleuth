@@ -29,38 +29,39 @@ app.controller("TVProgramsIndexController", [
 
 app.controller("TVProgramsSearchController", [
   "$scope", "$timeout", "theMovieDBAPI", function($scope, $timeout, theMovieDBAPI) {
-    $scope.queryResults = {};
     $scope.model = {
       query: ""
     };
-    $scope.search = function() {
-      if ($scope.model.query.length === 0) {
-        $scope.queryResults = {};
-        return;
-      }
-      return theMovieDBAPI.search($scope.model.query).then(function(data) {
-        var i, len, program, ref, results;
-        $scope.queryResults = data;
-        ref = $scope.queryResults.results;
-        results = [];
-        for (i = 0, len = ref.length; i < len; i++) {
-          program = ref[i];
-          results.push(program.inMyList = (function(_this) {
-            return function() {
-              var item, j, len1, ref1;
-              ref1 = tvSleuth.tvPrograms;
-              for (j = 0, len1 = ref1.length; j < len1; j++) {
-                item = ref1[j];
-                if (item.id === program.id) {
-                  return true;
+    $scope.service = {
+      page: 1,
+      queryData: [],
+      search: function() {
+        return theMovieDBAPI.search($scope.model.query, this.page).then((function(_this) {
+          return function(data) {
+            var i, len, program, ref;
+            ref = data.results;
+            for (i = 0, len = ref.length; i < len; i++) {
+              program = ref[i];
+              program.inMyList = (function() {
+                var item, j, len1, ref1;
+                ref1 = tvSleuth.tvPrograms;
+                for (j = 0, len1 = ref1.length; j < len1; j++) {
+                  item = ref1[j];
+                  if (item.id === program.id) {
+                    return true;
+                  }
                 }
-              }
-              return false;
-            };
-          })(this)());
-        }
-        return results;
-      });
+                return false;
+              })();
+            }
+            if (_this.page === 1) {
+              return _this.queryData = data;
+            } else {
+              return _this.queryData.results = _this.queryData.results.concat(data.results);
+            }
+          };
+        })(this));
+      }
     };
     $scope.addToMyList = function(tvProgram) {
       return theMovieDBAPI.add(tvProgram);

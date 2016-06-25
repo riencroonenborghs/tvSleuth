@@ -18,3 +18,7 @@ The extension comes pre-built, but you can easily build it yourself. It uses 'gu
 - click `Load unpacked extension...` (top left)
 - point it to the extension (the folder with the manifest.json file)
 - click `Select`
+
+## Requirements
+
+You'll need an API key from https://www.themoviedb.org.

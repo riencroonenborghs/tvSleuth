@@ -23,7 +23,8 @@
             <ng-md-icon icon="star" size="16"></ng-md-icon>
             {{tvProgram.popularity | number: 2}}
           </span>
-          <md-button class="md-primary" aria-label="Add to My List">
+          <small ng-if="tvProgram.inMyList">In your list!</small>
+          <md-button class="md-primary" aria-label="Add to My List" ng-click="addToMyList(tvProgram)" ng-if="!tvProgram.inMyList">
             <ng-md-icon icon="add_circle_outline"></ng-md-icon>
           </md-button>
         </h3>

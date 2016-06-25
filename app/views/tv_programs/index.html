@@ -2,8 +2,16 @@
 
 <md-content layout-padding>
   <p ng-if="!tvPrograms.length">You have no TV programs in your list.</p>
-  
-  <md-list ng-if="tvPrograms.length">
+</md-content>
+
+<md-content layout-padding ng-if="tvPrograms.length">  
+  <h3>
+    {{tvPrograms.length}}
+    <ng-pluralize count="tvPrograms.length" when="{'1':'program','other':'programs'}"></ng-pluralize>
+    in your list
+  </h3>
+
+  <md-list>
     <md-list-item class="md-2-line" ng-repeat="tvProgram in tvPrograms">
       <img ng-src="https://image.tmdb.org/t/p/w185{{tvProgram.poster_path}}" class="md-avatar" alt="{{tvProgram.original_name}}" />
       <div class="md-list-item-text" layout="column">
@@ -13,6 +21,9 @@
             <ng-md-icon icon="star" size="16"></ng-md-icon>
             {{tvProgram.popularity | number: 2}}
           </span>
+          <md-button class="md-primary" aria-label="Remove from My List" ng-click="removeFromMyList(tvProgram)">
+            <ng-md-icon icon="remove_circle_outline"></ng-md-icon>
+          </md-button>
         </h3>
         <p>{{tvProgram.overview}}</p>
       </div>

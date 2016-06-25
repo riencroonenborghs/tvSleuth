@@ -7,7 +7,7 @@ tvSleuth.theMovieDB = {
 };
 
 app.controller("AppController", [
-  "$scope", "$location", "$timeout", function($scope, $location, $timeout) {
+  "$scope", "$location", "$timeout", "tvProgramService", "$mdToast", function($scope, $location, $timeout, tvProgramService, $mdToast) {
     var loadSettings;
     $scope.theMovieDB = tvSleuth.theMovieDB;
     $scope.visit = function(path) {
@@ -27,6 +27,20 @@ app.controller("AppController", [
     }), 500);
     $scope.$on("reload.settings", function() {
       return loadSettings();
+    });
+    $scope.$on("added.tvProgram", function() {
+      return $mdToast.show({
+        hideDelay: 3000,
+        position: "bottom right",
+        templateUrl: "app/views/tv_programs/added.html"
+      });
+    });
+    $scope.$on("removed.tvProgram", function() {
+      return $mdToast.show({
+        hideDelay: 3000,
+        position: "bottom right",
+        templateUrl: "app/views/tv_programs/removed.html"
+      });
     });
     return $timeout(((function(_this) {
       return function() {

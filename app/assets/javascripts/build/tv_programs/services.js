@@ -51,6 +51,12 @@ app.service("tvProgramService", [
           }
         });
       },
+      airingToday: function(page) {
+        if (page == null) {
+          page = 1;
+        }
+        return this._sendRequest(this.apiPath + "/tv/airing_today?api_key=" + tvSleuth.theMovieDB.apiKey + "&page=" + page);
+      },
       _sendRequest: function(url) {
         var deferred, failure, options, success;
         deferred = $q.defer();

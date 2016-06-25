@@ -1,6 +1,6 @@
 {
   "name" : "tvSleuth",
-  "version" : "0.0.1",
+  "version" : "0.0.4",
   "description" : "Keep track of aired TV programs",
   "repository" : {
     "type" : "git",

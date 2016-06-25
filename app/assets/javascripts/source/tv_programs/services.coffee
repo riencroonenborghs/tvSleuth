@@ -26,6 +26,7 @@ app.service "tvProgramService", [ "$q", "$http", "$rootScope", ($q, $http, $root
           $rootScope.$broadcast "removed.tvProgram"
           $rootScope.$broadcast "reload.tvPrograms"
         )
+  airingToday: (page = 1) -> @_sendRequest "#{@apiPath}/tv/airing_today?api_key=#{tvSleuth.theMovieDB.apiKey}&page=#{page}"
   _sendRequest: (url) ->
     deferred = $q.defer()
     options = 

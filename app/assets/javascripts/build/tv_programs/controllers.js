@@ -36,7 +36,7 @@ app.controller("TVProgramsIndexController", [
 ]);
 
 app.controller("TVProgramsSearchController", [
-  "$scope", "tvProgramService", function($scope, tvProgramService) {
+  "$scope", "tvProgramService", "$timeout", function($scope, tvProgramService, $timeout) {
     $scope.queryResults = {};
     $scope.model = {
       query: ""
@@ -70,8 +70,11 @@ app.controller("TVProgramsSearchController", [
         return results;
       });
     };
-    return $scope.addToMyList = function(tvProgram) {
+    $scope.addToMyList = function(tvProgram) {
       return tvProgramService.add(tvProgram);
     };
+    return $timeout((function() {
+      return $("#search #query").focus();
+    }), 500);
   }
 ]);

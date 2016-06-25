@@ -23,7 +23,7 @@ app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", ($sco
   $scope.removeFromMyList = (tvProgram) -> tvProgramService.remove(tvProgram)
 ]
 
-app.controller "TVProgramsSearchController", ["$scope", "tvProgramService", ($scope, tvProgramService) ->
+app.controller "TVProgramsSearchController", ["$scope", "tvProgramService", "$timeout", ($scope, tvProgramService, $timeout) ->
   $scope.queryResults = {}
 
   $scope.model =
@@ -42,4 +42,6 @@ app.controller "TVProgramsSearchController", ["$scope", "tvProgramService", ($sc
           return false
 
   $scope.addToMyList = (tvProgram) -> tvProgramService.add(tvProgram)
+
+  $timeout (-> $("#search #query").focus()), 500
 ]

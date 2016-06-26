@@ -8,7 +8,7 @@ You can search for programs, manage a list of favourite ones, and the extension 
 
 ## Build
 
-The extension comes pre-built, but you can easily build it yourself. It uses 'gulp' for building, and 'npm' for maintaining packages.
+The extension comes pre-built, but you can easily build it yourself. It uses `gulp` for building, and `npm` for maintaining packages.
 
 ## Install
 

@@ -22,8 +22,6 @@ app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", "theM
 
 app.controller "TVProgramsSearchController", ["$scope", "$timeout", "theMovieDBAPI",
 ($scope, $timeout, theMovieDBAPI) ->
-  # $scope.queryResults = {}
-
   $scope.model =
     query: ""
 
@@ -31,6 +29,9 @@ app.controller "TVProgramsSearchController", ["$scope", "$timeout", "theMovieDBA
     page: 1
     queryData: []
     search: ->
+      if $scope.model.query == ""
+        @queryData = []
+        return
       @page = 1
       theMovieDBAPI.search($scope.model.query, @page).then (data) =>
         # lookup if programs in data are in my list of programs

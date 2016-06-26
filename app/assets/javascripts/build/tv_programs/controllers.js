@@ -36,6 +36,10 @@ app.controller("TVProgramsSearchController", [
       page: 1,
       queryData: [],
       search: function() {
+        if ($scope.model.query === "") {
+          this.queryData = [];
+          return;
+        }
         this.page = 1;
         return theMovieDBAPI.search($scope.model.query, this.page).then((function(_this) {
           return function(data) {

@@ -4,7 +4,7 @@ var app,
 app = angular.module("tvPrograms.services", []);
 
 app.service("theMovieDBAPI", [
-  "$q", "$http", "$rootScope", function($q, $http, $rootScope) {
+  "$q", "$http", function($q, $http) {
     return {
       apiPath: "http://api.themoviedb.org/3",
       search: function(query, page) {
@@ -52,12 +52,12 @@ app.service("tvSleuthAPI", [
     return {
       addTVProgram: function(tvProgram) {
         return chrome.storage.local.get("tvSleuth", function(data) {
-          var base, ref;
+          var ref;
           if (data.tvSleuth) {
             data = JSON.parse(data.tvSleuth);
-            (base = data.the_movie_db).tvPrograms || (base.tvPrograms = []);
-            if (ref = tvProgram.id, indexOf.call(data.the_movie_db.tvPrograms, ref) < 0) {
-              data.the_movie_db.tvPrograms.push(tvProgram.id);
+            data.tvPrograms || (data.tvPrograms = []);
+            if (ref = tvProgram.id, indexOf.call(data.tvPrograms, ref) < 0) {
+              data.tvPrograms.push(tvProgram.id);
             }
             data = JSON.stringify(data);
             return chrome.storage.local.set({
@@ -71,12 +71,12 @@ app.service("tvSleuthAPI", [
       },
       removeTVProgram: function(tvProgram) {
         return chrome.storage.local.get("tvSleuth", function(data) {
-          var base, ref;
+          var ref;
           if (data.tvSleuth) {
             data = JSON.parse(data.tvSleuth);
-            (base = data.the_movie_db).tvPrograms || (base.tvPrograms = []);
-            if (ref = tvProgram.id, indexOf.call(data.the_movie_db.tvPrograms, ref) >= 0) {
-              data.the_movie_db.tvPrograms.splice(data.the_movie_db.tvPrograms.indexOf(tvProgram.id));
+            data.tvPrograms || (data.tvPrograms = []);
+            if (ref = tvProgram.id, indexOf.call(data.tvPrograms, ref) >= 0) {
+              data.tvPrograms.splice(data.tvPrograms.indexOf(tvProgram.id));
             }
             data = JSON.stringify(data);
             return chrome.storage.local.set({
@@ -87,13 +87,25 @@ app.service("tvSleuthAPI", [
             }));
           }
         });
+      },
+      setAiredToday: function(airedToday) {
+        return chrome.storage.local.get("tvSleuth", function(data) {
+          if (data.tvSleuth) {
+            data = JSON.parse(data.tvSleuth);
+            data.airedToday = airedToday;
+            data = JSON.stringify(data);
+            return chrome.storage.local.set({
+              tvSleuth: data
+            });
+          }
+        });
       }
     };
   }
 ]);
 
 app.service("tvProgramService", [
-  "theMovieDBAPI", function(theMovieDBAPI) {
+  "theMovieDBAPI", "$q", function(theMovieDBAPI, $q) {
     return {
       sortTVPrograms: function(list) {
         return list.sort(function(a, b) {
@@ -117,7 +129,7 @@ app.service("tvProgramService", [
               tvPrograms = [];
               promises = (function() {
                 var i, len, ref, results;
-                ref = data.the_movie_db.tvPrograms || [];
+                ref = data.tvPrograms || [];
                 results = [];
                 for (i = 0, len = ref.length; i < len; i++) {
                   id = ref[i];
@@ -135,61 +147,44 @@ app.service("tvProgramService", [
           };
         })(this));
       },
-      checkPrograms: function(tvPrograms) {
-        var airedTvPrograms, checkAgainstTvPrograms, totalBadgeNumber;
-        totalBadgeNumber = 0;
-        airedTvPrograms = ["TV Sleuth"];
-        chrome.browserAction.setBadgeText({
-          text: ""
-        });
-        chrome.browserAction.setBadgeBackgroundColor({
-          color: [33, 150, 243, 255]
-        });
-        theMovieDBAPI.airingToday(1).then((function(_this) {
-          return function(body) {
-            var _page, i, ref, results;
-            checkAgainstTvPrograms(body.results);
-            results = [];
-            for (_page = i = 2, ref = body.total_pages; 2 <= ref ? i <= ref : i >= ref; _page = 2 <= ref ? ++i : --i) {
-              results.push(theMovieDBAPI.airingToday(_page).then(function(body) {
-                return checkAgainstTvPrograms(body.results);
-              }));
-            }
-            return results;
-          };
-        })(this));
-        return checkAgainstTvPrograms = function(tvProgramsAiredToday) {
-          var i, len, results, tvProgram, tvProgramAiredToday;
-          results = [];
-          for (i = 0, len = tvProgramsAiredToday.length; i < len; i++) {
-            tvProgramAiredToday = tvProgramsAiredToday[i];
-            results.push((function() {
-              var j, len1, results1;
-              results1 = [];
-              for (j = 0, len1 = tvPrograms.length; j < len1; j++) {
-                tvProgram = tvPrograms[j];
-                if (tvProgram.id === tvProgramAiredToday.id) {
-                  ++totalBadgeNumber;
-                  chrome.browserAction.setBadgeText({
-                    text: totalBadgeNumber.toString()
-                  });
-                  if (airedTvPrograms.length === 1) {
-                    airedTvPrograms.push("");
-                    airedTvPrograms.push("Aired today:");
-                  }
-                  airedTvPrograms.push("- " + tvProgram.name);
-                  results1.push(chrome.browserAction.setTitle({
-                    title: airedTvPrograms.join("\n")
-                  }));
-                } else {
-                  results1.push(void 0);
+      airedToday: function() {
+        var deferred;
+        deferred = $q.defer();
+        this.loadTVPrograms(function(tvPrograms) {
+          return theMovieDBAPI.airingToday(1).then((function(_this) {
+            return function(firstPageResponse) {
+              var _page, airedTVPrograms, otherPagesPromises;
+              airedTVPrograms = firstPageResponse.results;
+              otherPagesPromises = (function() {
+                var i, ref, results;
+                results = [];
+                for (_page = i = 2, ref = firstPageResponse.total_pages; 2 <= ref ? i <= ref : i >= ref; _page = 2 <= ref ? ++i : --i) {
+                  results.push(theMovieDBAPI.airingToday(_page));
                 }
-              }
-              return results1;
-            })());
-          }
-          return results;
-        };
+                return results;
+              })();
+              return Promise.all(otherPagesPromises).then(function(otherPagesResponses) {
+                var aired, airedTVProgram, i, j, k, len, len1, len2, response, tvProgram;
+                for (i = 0, len = otherPagesResponses.length; i < len; i++) {
+                  response = otherPagesResponses[i];
+                  airedTVPrograms = airedTVPrograms.concat(response.results);
+                }
+                aired = [];
+                for (j = 0, len1 = airedTVPrograms.length; j < len1; j++) {
+                  airedTVProgram = airedTVPrograms[j];
+                  for (k = 0, len2 = tvPrograms.length; k < len2; k++) {
+                    tvProgram = tvPrograms[k];
+                    if (tvProgram.id === airedTVProgram.id) {
+                      aired.push(airedTVProgram);
+                    }
+                  }
+                }
+                return deferred.resolve(aired);
+              });
+            };
+          })(this));
+        });
+        return deferred.promise;
       }
     };
   }

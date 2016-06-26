@@ -55,24 +55,32 @@ app.controller("AppController", [
 ]);
 
 app.controller("BackgroundAppController", [
-  "$scope", "$location", "tvProgramService", "$mdToast", "$timeout", "$interval", function($scope, $location, tvProgramService, $mdToast, $timeout, $interval) {
+  "$scope", "tvProgramService", "$timeout", "$interval", function($scope, tvProgramService, $timeout, $interval) {
     $scope.tvPrograms = [];
-    chrome.storage.local.get("tvSleuth", function(data) {
-      var callback;
+    return chrome.storage.local.get("tvSleuth", function(data) {
+      var checkAiredTVPrograms;
       if (data.tvSleuth) {
         data = JSON.parse(data.tvSleuth);
         tvSleuth.theMovieDB.apiKey = data.the_movie_db.api_key;
-        callback = function(tvPrograms) {
-          return $scope.tvPrograms = tvPrograms;
+        chrome.browserAction.setBadgeBackgroundColor({
+          color: [33, 150, 243, 255]
+        });
+        chrome.browserAction.setBadgeText({
+          text: ""
+        });
+        checkAiredTVPrograms = function() {
+          console.debug("asd");
+          return tvProgramService.airedToday().then(function(tvProgramsAiredToday) {
+            return chrome.browserAction.setBadgeText({
+              text: "" + tvProgramsAiredToday.length
+            });
+          });
         };
-        return tvProgramService.loadTVPrograms(callback);
+        checkAiredTVPrograms();
+        return $interval((function() {
+          return checkAiredTVPrograms();
+        }), 1000 * 2);
       }
     });
-    $timeout((function() {
-      return tvProgramService.checkPrograms($scope.tvPrograms);
-    }), 5000);
-    return $interval((function() {
-      return tvProgramService.checkPrograms($scope.tvPrograms);
-    }), 1000 * 3600);
   }
 ]);

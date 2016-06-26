@@ -18,6 +18,9 @@ app.controller("TVProgramsIndexController", [
       return tvProgramService.loadTVPrograms(callback);
     };
     loadTVPrograms();
+    tvProgramService.airedToday().then(function(d) {
+      return console.debug(d);
+    });
     $scope.$on("reload.tvPrograms", function() {
       return loadTVPrograms();
     });

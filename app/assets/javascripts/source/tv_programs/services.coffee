@@ -1,6 +1,6 @@
 app = angular.module "tvPrograms.services", []
 
-app.service "theMovieDBAPI", [ "$q", "$http", "$rootScope", ($q, $http, $rootScope) ->
+app.service "theMovieDBAPI", [ "$q", "$http", ($q, $http) ->
   apiPath: "http://api.themoviedb.org/3"
   search: (query, page = 1) -> @_sendRequest "#{@apiPath}/search/tv?api_key=#{tvSleuth.theMovieDB.apiKey}&query=#{query}&page=#{page}"
   get: (tvProgramID) -> @_sendRequest "#{@apiPath}/tv/#{tvProgramID}?api_key=#{tvSleuth.theMovieDB.apiKey}"
@@ -27,8 +27,8 @@ app.service "tvSleuthAPI", [ "$rootScope", ($rootScope) ->
     chrome.storage.local.get "tvSleuth", (data) ->      
       if data.tvSleuth
         data = JSON.parse data.tvSleuth
-        data.the_movie_db.tvPrograms ||= []
-        data.the_movie_db.tvPrograms.push tvProgram.id unless tvProgram.id in data.the_movie_db.tvPrograms
+        data.tvPrograms ||= []
+        data.tvPrograms.push tvProgram.id unless tvProgram.id in data.tvPrograms
         data = JSON.stringify data
         chrome.storage.local.set {tvSleuth: data}, (->
           $rootScope.$broadcast "added.tvProgram"
@@ -38,16 +38,23 @@ app.service "tvSleuthAPI", [ "$rootScope", ($rootScope) ->
     chrome.storage.local.get "tvSleuth", (data) ->      
       if data.tvSleuth
         data = JSON.parse data.tvSleuth
-        data.the_movie_db.tvPrograms ||= []
-        data.the_movie_db.tvPrograms.splice(data.the_movie_db.tvPrograms.indexOf(tvProgram.id)) if tvProgram.id in data.the_movie_db.tvPrograms
+        data.tvPrograms ||= []
+        data.tvPrograms.splice(data.tvPrograms.indexOf(tvProgram.id)) if tvProgram.id in data.tvPrograms
         data = JSON.stringify data
         chrome.storage.local.set {tvSleuth: data}, (->
           $rootScope.$broadcast "removed.tvProgram"
           $rootScope.$broadcast "reload.tvPrograms"
         )
+  setAiredToday: (airedToday) ->
+    chrome.storage.local.get "tvSleuth", (data) ->      
+      if data.tvSleuth
+        data = JSON.parse data.tvSleuth
+        data.airedToday = airedToday
+        data = JSON.stringify data
+        chrome.storage.local.set {tvSleuth: data}
 ]
 
-app.service "tvProgramService", [ "theMovieDBAPI", (theMovieDBAPI) ->
+app.service "tvProgramService", [ "theMovieDBAPI", "$q", (theMovieDBAPI, $q) ->
   sortTVPrograms: (list) ->
     list.sort (a,b) ->
         if a.original_name < b.original_name
@@ -62,33 +69,57 @@ app.service "tvProgramService", [ "theMovieDBAPI", (theMovieDBAPI) ->
       if data.tvSleuth
         data        = JSON.parse data.tvSleuth
         tvPrograms  = []
-        promises    = for id in (data.the_movie_db.tvPrograms || [])
+        promises    = for id in (data.tvPrograms || [])
           theMovieDBAPI.get(id)
         Promise.all(promises).then (tvPrograms) =>
           tvPrograms = @sortTVPrograms tvPrograms
           callback tvPrograms if callback
 
-  checkPrograms: (tvPrograms) ->
-    totalBadgeNumber  = 0
-    airedTvPrograms   = ["TV Sleuth"]
-    chrome.browserAction.setBadgeText {text: ""}
-    chrome.browserAction.setBadgeBackgroundColor {color: [33,150,243,255]}
-  
-    theMovieDBAPI.airingToday(1).then (body) =>
-      checkAgainstTvPrograms body.results
-      for _page in [2..body.total_pages]
-        theMovieDBAPI.airingToday(_page).then (body) =>
-          checkAgainstTvPrograms body.results
+  airedToday: ->
+    deferred = $q.defer()
+    # load saved tv programs
+    @loadTVPrograms (tvPrograms) ->
+      # list what's aired today
+      # get first page, from that repsonse get all other pages and pool responses
+      theMovieDBAPI.airingToday(1).then (firstPageResponse) =>
+        airedTVPrograms     = firstPageResponse.results
+        otherPagesPromises  = for _page in [2..firstPageResponse.total_pages]
+          theMovieDBAPI.airingToday(_page)
+        Promise.all(otherPagesPromises).then (otherPagesResponses) =>
+          for response in otherPagesResponses
+            airedTVPrograms = airedTVPrograms.concat response.results
+          # check if saved tv program aired today
+          aired = []
+          for airedTVProgram in airedTVPrograms
+            for tvProgram in tvPrograms
+              if tvProgram.id == airedTVProgram.id
+                aired.push airedTVProgram
+          deferred.resolve aired
+    deferred.promise
+          
 
-    checkAgainstTvPrograms = (tvProgramsAiredToday) ->
-      for tvProgramAiredToday in tvProgramsAiredToday
-        for tvProgram in tvPrograms
-          if tvProgram.id == tvProgramAiredToday.id
-            ++totalBadgeNumber
-            chrome.browserAction.setBadgeText {text: totalBadgeNumber.toString()}
-            if airedTvPrograms.length == 1
-              airedTvPrograms.push ""
-              airedTvPrograms.push "Aired today:"
-            airedTvPrograms.push "- #{tvProgram.name}"
-            chrome.browserAction.setTitle {title: airedTvPrograms.join("\n")}
+
+  # checkPrograms: (tvPrograms) ->
+  #   totalBadgeNumber  = 0
+  #   airedTVPrograms   = ["TV Sleuth"]
+  #   chrome.browserAction.setBadgeText {text: ""}
+  #   chrome.browserAction.setBadgeBackgroundColor {color: [33,150,243,255]}
+  
+  #   theMovieDBAPI.airingToday(1).then (body) =>
+  #     checkAgainstTVPrograms body.results
+  #     for _page in [2..body.total_pages]
+  #       theMovieDBAPI.airingToday(_page).then (body) =>
+  #         checkAgainstTVPrograms body.results
+
+  #   checkAgainstTVPrograms = (tvProgramsAiredToday) ->
+  #     for tvProgramAiredToday in tvProgramsAiredToday
+  #       for tvProgram in tvPrograms
+  #         if tvProgram.id == tvProgramAiredToday.id
+  #           ++totalBadgeNumber
+  #           chrome.browserAction.setBadgeText {text: totalBadgeNumber.toString()}
+  #           if airedTVPrograms.length == 1
+  #             airedTVPrograms.push ""
+  #             airedTVPrograms.push "Aired today:"
+  #           airedTVPrograms.push "- #{tvProgram.name}"
+  #           chrome.browserAction.setTitle {title: airedTVPrograms.join("\n")}
 ]

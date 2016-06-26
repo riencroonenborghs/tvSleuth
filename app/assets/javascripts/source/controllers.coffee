@@ -38,19 +38,23 @@ app.controller "AppController", ["$scope", "$location", "$timeout", "$mdToast",
   ), 1000
 ]
 
-app.controller "BackgroundAppController", ["$scope", "$location", "tvProgramService", "$mdToast", "$timeout", "$interval",
-($scope, $location, tvProgramService, $mdToast, $timeout, $interval) ->  
+app.controller "BackgroundAppController", ["$scope", "tvProgramService", "$timeout", "$interval",
+($scope, tvProgramService, $timeout, $interval) ->  
   $scope.tvPrograms = []
 
   # load API key from Chrome local storage
-  chrome.storage.local.get "tvSleuth", (data) ->      
+  chrome.storage.local.get "tvSleuth", (data) ->
     if data.tvSleuth
       data = JSON.parse data.tvSleuth
       tvSleuth.theMovieDB.apiKey = data.the_movie_db.api_key
-      # load saved tv programs
-      callback = (tvPrograms) -> $scope.tvPrograms = tvPrograms
-      tvProgramService.loadTVPrograms callback
-  
-  $timeout (-> tvProgramService.checkPrograms $scope.tvPrograms), 5000
-  $interval (-> tvProgramService.checkPrograms $scope.tvPrograms), 1000 * 3600
+
+      # set colour + reset badge
+      chrome.browserAction.setBadgeBackgroundColor {color: [33,150,243,255]}
+      chrome.browserAction.setBadgeText {text: ""}
+
+      checkAiredTVPrograms = ->
+        tvProgramService.airedToday().then (tvProgramsAiredToday) ->
+          chrome.browserAction.setBadgeText {text: "#{tvProgramsAiredToday.length}"}
+      checkAiredTVPrograms()
+      $interval (-> checkAiredTVPrograms()), 1000 * 3600
 ]

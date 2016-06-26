@@ -14,6 +14,9 @@ app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", "tvSl
       tvProgramService.checkPrograms $scope.tvPrograms
     tvProgramService.loadTVPrograms callback
   loadTVPrograms()
+
+  tvProgramService.airedToday().then (d) ->
+    console.debug d
  
   $scope.$on "reload.tvPrograms", -> loadTVPrograms()
 

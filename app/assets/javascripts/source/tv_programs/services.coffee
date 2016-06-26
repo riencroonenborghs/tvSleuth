@@ -4,28 +4,6 @@ app.service "theMovieDBAPI", [ "$q", "$http", "$rootScope", ($q, $http, $rootSco
   apiPath: "http://api.themoviedb.org/3"
   search: (query, page = 1) -> @_sendRequest "#{@apiPath}/search/tv?api_key=#{tvSleuth.theMovieDB.apiKey}&query=#{query}&page=#{page}"
   get: (tvProgramID) -> @_sendRequest "#{@apiPath}/tv/#{tvProgramID}?api_key=#{tvSleuth.theMovieDB.apiKey}"
-  add: (tvProgram) ->
-    chrome.storage.local.get "tvSleuth", (data) ->      
-      if data.tvSleuth
-        data = JSON.parse data.tvSleuth
-        data.the_movie_db.tvPrograms ||= []
-        data.the_movie_db.tvPrograms.push tvProgram.id unless tvProgram.id in data.the_movie_db.tvPrograms
-        data = JSON.stringify data
-        chrome.storage.local.set {tvSleuth: data}, (->
-          $rootScope.$broadcast "added.tvProgram"
-          $rootScope.$broadcast "reload.tvPrograms"
-        )
-  remove: (tvProgram) ->
-    chrome.storage.local.get "tvSleuth", (data) ->      
-      if data.tvSleuth
-        data = JSON.parse data.tvSleuth
-        data.the_movie_db.tvPrograms ||= []
-        data.the_movie_db.tvPrograms.splice(data.the_movie_db.tvPrograms.indexOf(tvProgram.id)) if tvProgram.id in data.the_movie_db.tvPrograms
-        data = JSON.stringify data
-        chrome.storage.local.set {tvSleuth: data}, (->
-          $rootScope.$broadcast "removed.tvProgram"
-          $rootScope.$broadcast "reload.tvPrograms"
-        )
   airingToday: (page = 1) -> @_sendRequest "#{@apiPath}/tv/airing_today?api_key=#{tvSleuth.theMovieDB.apiKey}&page=#{page}"
   _sendRequest: (url) ->
     deferred = $q.defer()
@@ -42,6 +20,31 @@ app.service "theMovieDBAPI", [ "$q", "$http", "$rootScope", ($q, $http, $rootSco
       return
     $http(options).then(success, failure)
     return deferred.promise
+]
+
+app.service "tvSleuthAPI", [ "$rootScope", ($rootScope) ->
+  addTVProgram: (tvProgram) ->
+    chrome.storage.local.get "tvSleuth", (data) ->      
+      if data.tvSleuth
+        data = JSON.parse data.tvSleuth
+        data.the_movie_db.tvPrograms ||= []
+        data.the_movie_db.tvPrograms.push tvProgram.id unless tvProgram.id in data.the_movie_db.tvPrograms
+        data = JSON.stringify data
+        chrome.storage.local.set {tvSleuth: data}, (->
+          $rootScope.$broadcast "added.tvProgram"
+          $rootScope.$broadcast "reload.tvPrograms"
+        )
+  removeTVProgram: (tvProgram) ->
+    chrome.storage.local.get "tvSleuth", (data) ->      
+      if data.tvSleuth
+        data = JSON.parse data.tvSleuth
+        data.the_movie_db.tvPrograms ||= []
+        data.the_movie_db.tvPrograms.splice(data.the_movie_db.tvPrograms.indexOf(tvProgram.id)) if tvProgram.id in data.the_movie_db.tvPrograms
+        data = JSON.stringify data
+        chrome.storage.local.set {tvSleuth: data}, (->
+          $rootScope.$broadcast "removed.tvProgram"
+          $rootScope.$broadcast "reload.tvPrograms"
+        )
 ]
 
 app.service "tvProgramService", [ "theMovieDBAPI", (theMovieDBAPI) ->

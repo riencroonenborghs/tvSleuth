@@ -4,8 +4,8 @@ app = angular.module "tvPrograms.controllers", []
 # mainly for search to display + button or not
 tvSleuth.tvPrograms = []
 
-app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", "theMovieDBAPI", 
-($scope, tvProgramService, theMovieDBAPI) ->
+app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", "tvSleuthAPI", 
+($scope, tvProgramService, tvSleuthAPI) ->
   $scope.tvPrograms = []
   loadTVPrograms    = ->
     callback = (tvPrograms) ->
@@ -17,11 +17,11 @@ app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", "theM
  
   $scope.$on "reload.tvPrograms", -> loadTVPrograms()
 
-  $scope.removeFromMyList = (tvProgram) -> theMovieDBAPI.remove(tvProgram)
+  $scope.removeFromMyList = (tvProgram) -> tvSleuthAPI.removeTVProgram(tvProgram)
 ]
 
-app.controller "TVProgramsSearchController", ["$scope", "$timeout", "theMovieDBAPI",
-($scope, $timeout, theMovieDBAPI) ->
+app.controller "TVProgramsSearchController", ["$scope", "$timeout", "theMovieDBAPI", "tvSleuthAPI",
+($scope, $timeout, theMovieDBAPI, tvSleuthAPI) ->
   $scope.model =
     query: ""
 
@@ -53,7 +53,7 @@ app.controller "TVProgramsSearchController", ["$scope", "$timeout", "theMovieDBA
         # set full data when on first page, otherwise just concat the actual results
         @queryData.results = @queryData.results.concat data.results
   
-  $scope.addToMyList = (tvProgram) -> theMovieDBAPI.add(tvProgram)
+  $scope.addToMyList = (tvProgram) -> tvSleuthAPI.addTVProgram(tvProgram)
 
   $timeout (-> $("#search #query").focus()), 500
 ]

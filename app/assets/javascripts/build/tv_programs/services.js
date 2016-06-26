@@ -16,44 +16,6 @@ app.service("theMovieDBAPI", [
       get: function(tvProgramID) {
         return this._sendRequest(this.apiPath + "/tv/" + tvProgramID + "?api_key=" + tvSleuth.theMovieDB.apiKey);
       },
-      add: function(tvProgram) {
-        return chrome.storage.local.get("tvSleuth", function(data) {
-          var base, ref;
-          if (data.tvSleuth) {
-            data = JSON.parse(data.tvSleuth);
-            (base = data.the_movie_db).tvPrograms || (base.tvPrograms = []);
-            if (ref = tvProgram.id, indexOf.call(data.the_movie_db.tvPrograms, ref) < 0) {
-              data.the_movie_db.tvPrograms.push(tvProgram.id);
-            }
-            data = JSON.stringify(data);
-            return chrome.storage.local.set({
-              tvSleuth: data
-            }, (function() {
-              $rootScope.$broadcast("added.tvProgram");
-              return $rootScope.$broadcast("reload.tvPrograms");
-            }));
-          }
-        });
-      },
-      remove: function(tvProgram) {
-        return chrome.storage.local.get("tvSleuth", function(data) {
-          var base, ref;
-          if (data.tvSleuth) {
-            data = JSON.parse(data.tvSleuth);
-            (base = data.the_movie_db).tvPrograms || (base.tvPrograms = []);
-            if (ref = tvProgram.id, indexOf.call(data.the_movie_db.tvPrograms, ref) >= 0) {
-              data.the_movie_db.tvPrograms.splice(data.the_movie_db.tvPrograms.indexOf(tvProgram.id));
-            }
-            data = JSON.stringify(data);
-            return chrome.storage.local.set({
-              tvSleuth: data
-            }, (function() {
-              $rootScope.$broadcast("removed.tvProgram");
-              return $rootScope.$broadcast("reload.tvPrograms");
-            }));
-          }
-        });
-      },
       airingToday: function(page) {
         if (page == null) {
           page = 1;
@@ -80,6 +42,51 @@ app.service("theMovieDBAPI", [
         };
         $http(options).then(success, failure);
         return deferred.promise;
+      }
+    };
+  }
+]);
+
+app.service("tvSleuthAPI", [
+  "$rootScope", function($rootScope) {
+    return {
+      addTVProgram: function(tvProgram) {
+        return chrome.storage.local.get("tvSleuth", function(data) {
+          var base, ref;
+          if (data.tvSleuth) {
+            data = JSON.parse(data.tvSleuth);
+            (base = data.the_movie_db).tvPrograms || (base.tvPrograms = []);
+            if (ref = tvProgram.id, indexOf.call(data.the_movie_db.tvPrograms, ref) < 0) {
+              data.the_movie_db.tvPrograms.push(tvProgram.id);
+            }
+            data = JSON.stringify(data);
+            return chrome.storage.local.set({
+              tvSleuth: data
+            }, (function() {
+              $rootScope.$broadcast("added.tvProgram");
+              return $rootScope.$broadcast("reload.tvPrograms");
+            }));
+          }
+        });
+      },
+      removeTVProgram: function(tvProgram) {
+        return chrome.storage.local.get("tvSleuth", function(data) {
+          var base, ref;
+          if (data.tvSleuth) {
+            data = JSON.parse(data.tvSleuth);
+            (base = data.the_movie_db).tvPrograms || (base.tvPrograms = []);
+            if (ref = tvProgram.id, indexOf.call(data.the_movie_db.tvPrograms, ref) >= 0) {
+              data.the_movie_db.tvPrograms.splice(data.the_movie_db.tvPrograms.indexOf(tvProgram.id));
+            }
+            data = JSON.stringify(data);
+            return chrome.storage.local.set({
+              tvSleuth: data
+            }, (function() {
+              $rootScope.$broadcast("removed.tvProgram");
+              return $rootScope.$broadcast("reload.tvPrograms");
+            }));
+          }
+        });
       }
     };
   }

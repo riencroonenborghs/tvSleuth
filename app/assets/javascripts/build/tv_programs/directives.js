@@ -20,3 +20,33 @@ app.directive("loadMore", [
     };
   }
 ]);
+
+app.directive("tvProgramsList", [
+  function() {
+    return {
+      restrict: "E",
+      scope: {
+        tvPrograms: "=",
+        canRemove: "=?",
+        onRemove: "&?",
+        canAdd: "=?",
+        onAdd: "&?"
+      },
+      templateUrl: "app/views/tv_programs/list.html",
+      controller: [
+        "$scope", function($scope) {
+          $scope.add = function(tvProgram) {
+            return $scope.onAdd({
+              $tvProgram: tvProgram
+            });
+          };
+          return $scope.remove = function(tvProgram) {
+            return $scope.onRemove({
+              $tvProgram: tvProgram
+            });
+          };
+        }
+      ]
+    };
+  }
+]);

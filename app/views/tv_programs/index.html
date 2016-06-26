@@ -11,22 +11,5 @@
     in your list
   </h3>
 
-  <md-list>
-    <md-list-item class="md-2-line" ng-repeat="tvProgram in tvPrograms">
-      <img ng-src="https://image.tmdb.org/t/p/w185{{tvProgram.poster_path}}" class="md-avatar" alt="{{tvProgram.original_name}}" />
-      <div class="md-list-item-text" layout="column">
-        <h3>
-          {{tvProgram.original_name}}
-          <span class="stars">
-            <ng-md-icon icon="star" size="16"></ng-md-icon>
-            {{tvProgram.popularity | number: 2}}
-          </span>
-          <md-button class="md-primary" aria-label="Remove from My List" ng-click="removeFromMyList(tvProgram)">
-            <ng-md-icon icon="remove_circle_outline"></ng-md-icon>
-          </md-button>
-        </h3>
-        <p>{{tvProgram.overview}}</p>
-      </div>
-    </md-list-item>
-  </md-list>
+  <tv-programs-list tv-programs="tvPrograms" can-remove="::true" on-remove="removeFromMyList($tvProgram)"></tv-programs-list>
 </md-content>

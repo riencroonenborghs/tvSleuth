@@ -10,3 +10,18 @@ app.directive "loadMore", [->
       $scope.service.searchNext()
   ]
 ]
+
+app.directive "tvProgramsList", [->
+  restrict: "E"
+  scope:
+    tvPrograms: "="
+    canRemove: "=?"
+    onRemove: "&?"
+    canAdd: "=?"
+    onAdd: "&?"
+  templateUrl: "app/views/tv_programs/list.html"
+  controller: ["$scope", ($scope)->
+    $scope.add    = (tvProgram) -> $scope.onAdd $tvProgram: tvProgram
+    $scope.remove = (tvProgram) -> $scope.onRemove $tvProgram: tvProgram
+  ]
+]

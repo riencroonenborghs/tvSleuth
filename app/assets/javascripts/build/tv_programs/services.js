@@ -88,25 +88,42 @@ app.service("theMovieDBAPI", [
 app.service("tvProgramService", [
   "theMovieDBAPI", function(theMovieDBAPI) {
     return {
+      sortTVPrograms: function(list) {
+        return list.sort(function(a, b) {
+          if (a.original_name < b.original_name) {
+            return -1;
+          }
+          if (a.original_name > b.original_name) {
+            return 1;
+          }
+          return 0;
+        });
+      },
       loadTVPrograms: function(callback) {
         var tvPrograms;
         tvPrograms = [];
         return chrome.storage.local.get("tvSleuth", (function(_this) {
           return function(data) {
-            var i, id, len, ref;
+            var id, promises;
             if (data.tvSleuth) {
               data = JSON.parse(data.tvSleuth);
               tvPrograms = [];
-              ref = data.the_movie_db.tvPrograms || [];
-              for (i = 0, len = ref.length; i < len; i++) {
-                id = ref[i];
-                theMovieDBAPI.get(id).then(function(data) {
-                  return tvPrograms.push(data);
-                });
-              }
-              if (callback) {
-                return callback(tvPrograms);
-              }
+              promises = (function() {
+                var i, len, ref, results;
+                ref = data.the_movie_db.tvPrograms || [];
+                results = [];
+                for (i = 0, len = ref.length; i < len; i++) {
+                  id = ref[i];
+                  results.push(theMovieDBAPI.get(id));
+                }
+                return results;
+              })();
+              return Promise.all(promises).then(function(tvPrograms) {
+                tvPrograms = _this.sortTVPrograms(tvPrograms);
+                if (callback) {
+                  return callback(tvPrograms);
+                }
+              });
             }
           };
         })(this));

@@ -45,16 +45,25 @@ app.service "theMovieDBAPI", [ "$q", "$http", "$rootScope", ($q, $http, $rootSco
 ]
 
 app.service "tvProgramService", [ "theMovieDBAPI", (theMovieDBAPI) ->
+  sortTVPrograms: (list) ->
+    list.sort (a,b) ->
+        if a.original_name < b.original_name
+          return -1
+        if a.original_name > b.original_name
+          return 1
+        return 0
+
   loadTVPrograms: (callback) ->
     tvPrograms = []
     chrome.storage.local.get "tvSleuth", (data) =>
       if data.tvSleuth
-        data = JSON.parse data.tvSleuth
-        tvPrograms = []
-        for id in (data.the_movie_db.tvPrograms || [])
-          theMovieDBAPI.get(id).then (data) =>
-            tvPrograms.push data
-        callback tvPrograms if callback  
+        data        = JSON.parse data.tvSleuth
+        tvPrograms  = []
+        promises    = for id in (data.the_movie_db.tvPrograms || [])
+          theMovieDBAPI.get(id)
+        Promise.all(promises).then (tvPrograms) =>
+          tvPrograms = @sortTVPrograms tvPrograms
+          callback tvPrograms if callback
 
   checkPrograms: (tvPrograms) ->
     totalBadgeNumber  = 0

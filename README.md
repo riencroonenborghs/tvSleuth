@@ -12,7 +12,7 @@ The extension comes pre-built, but you can easily build it yourself. It uses `gu
 
 ## Install
 
-- download and unpack the zip file (`Download ZIP` on right side)
+- download and unpack the zip file (`Download ZIP` on top)
 - go to `chrome://extensions`
 - check `Developer mode` (top right)
 - click `Load unpacked extension...` (top left)
@@ -24,8 +24,8 @@ The extension comes pre-built, but you can easily build it yourself. It uses `gu
 You'll need an API key from https://www.themoviedb.org.
 
 ## Screenshots
-#### Icon, Badge & Title
-![Icon, Badge & Title](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/48589ae3053b50c5c4ea6948cfbcb78401f19b0a/screenshots/01-icon-badge-title.png "Icon, Badge & Title")
+#### Icon & Badge
+![Icon & Badge](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/48589ae3053b50c5c4ea6948cfbcb78401f19b0a/screenshots/01-icon-badge-title.png "Icon & Badge")
 
 #### Loading Screen
 ![Loading](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/b6027175bcf6c4e65fca9407b719f6bd8b387eff/screenshots/02-loading.png "Loading")

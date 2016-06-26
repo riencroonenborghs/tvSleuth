@@ -45,13 +45,6 @@ app.service "tvSleuthAPI", [ "$rootScope", ($rootScope) ->
           $rootScope.$broadcast "removed.tvProgram"
           $rootScope.$broadcast "reload.tvPrograms"
         )
-  setAiredToday: (airedToday) ->
-    chrome.storage.local.get "tvSleuth", (data) ->      
-      if data.tvSleuth
-        data = JSON.parse data.tvSleuth
-        data.airedToday = airedToday
-        data = JSON.stringify data
-        chrome.storage.local.set {tvSleuth: data}
 ]
 
 app.service "tvProgramService", [ "theMovieDBAPI", "$q", (theMovieDBAPI, $q) ->
@@ -96,30 +89,4 @@ app.service "tvProgramService", [ "theMovieDBAPI", "$q", (theMovieDBAPI, $q) ->
                 aired.push airedTVProgram
           deferred.resolve aired
     deferred.promise
-          
-
-
-  # checkPrograms: (tvPrograms) ->
-  #   totalBadgeNumber  = 0
-  #   airedTVPrograms   = ["TV Sleuth"]
-  #   chrome.browserAction.setBadgeText {text: ""}
-  #   chrome.browserAction.setBadgeBackgroundColor {color: [33,150,243,255]}
-  
-  #   theMovieDBAPI.airingToday(1).then (body) =>
-  #     checkAgainstTVPrograms body.results
-  #     for _page in [2..body.total_pages]
-  #       theMovieDBAPI.airingToday(_page).then (body) =>
-  #         checkAgainstTVPrograms body.results
-
-  #   checkAgainstTVPrograms = (tvProgramsAiredToday) ->
-  #     for tvProgramAiredToday in tvProgramsAiredToday
-  #       for tvProgram in tvPrograms
-  #         if tvProgram.id == tvProgramAiredToday.id
-  #           ++totalBadgeNumber
-  #           chrome.browserAction.setBadgeText {text: totalBadgeNumber.toString()}
-  #           if airedTVPrograms.length == 1
-  #             airedTVPrograms.push ""
-  #             airedTVPrograms.push "Aired today:"
-  #           airedTVPrograms.push "- #{tvProgram.name}"
-  #           chrome.browserAction.setTitle {title: airedTVPrograms.join("\n")}
 ]

@@ -49,7 +49,7 @@ app.controller "BackgroundAppController", ["$scope", "tvProgramService", "$timeo
       tvSleuth.theMovieDB.apiKey = data.the_movie_db.api_key
 
       # set colour + reset badge
-      chrome.browserAction.setBadgeBackgroundColor {color: [33,150,243,255]}
+      chrome.browserAction.setBadgeBackgroundColor {color: [243,33,33,255]}
       chrome.browserAction.setBadgeText {text: ""}
 
       checkAiredTVPrograms = ->

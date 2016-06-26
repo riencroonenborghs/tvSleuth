@@ -87,18 +87,6 @@ app.service("tvSleuthAPI", [
             }));
           }
         });
-      },
-      setAiredToday: function(airedToday) {
-        return chrome.storage.local.get("tvSleuth", function(data) {
-          if (data.tvSleuth) {
-            data = JSON.parse(data.tvSleuth);
-            data.airedToday = airedToday;
-            data = JSON.stringify(data);
-            return chrome.storage.local.set({
-              tvSleuth: data
-            });
-          }
-        });
       }
     };
   }

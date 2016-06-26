@@ -63,13 +63,12 @@ app.controller("BackgroundAppController", [
         data = JSON.parse(data.tvSleuth);
         tvSleuth.theMovieDB.apiKey = data.the_movie_db.api_key;
         chrome.browserAction.setBadgeBackgroundColor({
-          color: [33, 150, 243, 255]
+          color: [243, 33, 33, 255]
         });
         chrome.browserAction.setBadgeText({
           text: ""
         });
         checkAiredTVPrograms = function() {
-          console.debug("asd");
           return tvProgramService.airedToday().then(function(tvProgramsAiredToday) {
             return chrome.browserAction.setBadgeText({
               text: "" + tvProgramsAiredToday.length
@@ -79,7 +78,7 @@ app.controller("BackgroundAppController", [
         checkAiredTVPrograms();
         return $interval((function() {
           return checkAiredTVPrograms();
-        }), 1000 * 2);
+        }), 1000 * 3600);
       }
     });
   }

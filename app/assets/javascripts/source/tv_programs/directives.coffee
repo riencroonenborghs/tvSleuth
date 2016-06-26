@@ -7,7 +7,6 @@ app.directive "loadMore", [->
   templateUrl: "app/views/tv_programs/load_more.html"
   controller: ["$scope", ($scope) ->
     $scope.nextPage = ->
-      ++$scope.service.page
-      $scope.service.search()
+      $scope.service.searchNext()
   ]
 ]

@@ -31,6 +31,17 @@ app.controller "TVProgramsSearchController", ["$scope", "$timeout", "theMovieDBA
     page: 1
     queryData: []
     search: ->
+      @page = 1
+      theMovieDBAPI.search($scope.model.query, @page).then (data) =>
+        # lookup if programs in data are in my list of programs
+        for program in data.results
+          program.inMyList = do =>
+            for item in tvSleuth.tvPrograms
+              return true if item.id == program.id
+            return false
+        @queryData = data
+    searchNext: ->
+      ++@page
       theMovieDBAPI.search($scope.model.query, @page).then (data) =>
         # lookup if programs in data are in my list of programs
         for program in data.results
@@ -39,11 +50,8 @@ app.controller "TVProgramsSearchController", ["$scope", "$timeout", "theMovieDBA
               return true if item.id == program.id
             return false
         # set full data when on first page, otherwise just concat the actual results
-        if @page == 1
-          @queryData = data
-        else
-          @queryData.results = @queryData.results.concat data.results
-
+        @queryData.results = @queryData.results.concat data.results
+  
   $scope.addToMyList = (tvProgram) -> theMovieDBAPI.add(tvProgram)
 
   $timeout (-> $("#search #query").focus()), 500

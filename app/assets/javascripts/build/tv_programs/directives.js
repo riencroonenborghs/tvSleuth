@@ -13,8 +13,7 @@ app.directive("loadMore", [
       controller: [
         "$scope", function($scope) {
           return $scope.nextPage = function() {
-            ++$scope.service.page;
-            return $scope.service.search();
+            return $scope.service.searchNext();
           };
         }
       ]

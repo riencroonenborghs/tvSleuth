@@ -94,6 +94,7 @@ app.service "tvProgramService", [ "tvMazeAPI", "$q", (tvMazeAPI, $q) ->
           for tvProgram in tvPrograms
             if tvProgram.show.id == airingTVProgram.show.id
               airing.push airingTVProgram
+        console.debug airing
         deferred.resolve airing
 
     deferred.promise

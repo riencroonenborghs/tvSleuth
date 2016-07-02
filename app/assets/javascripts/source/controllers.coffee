@@ -26,7 +26,7 @@ app.controller "BackgroundAppController", ["$scope", "tvProgramService", "$inter
   intervalInSeconds = 10
   counter           = (halfHourInseconds / intervalInSeconds) - 1
   
-  checkAiredTVPrograms = ->
+  checkAiringTVPrograms = ->
     ++counter
     r = Math.floor((Math.random() * 255) + 1)        
     chrome.browserAction.setBadgeBackgroundColor {color: [r,33,33,255]}
@@ -37,10 +37,10 @@ app.controller "BackgroundAppController", ["$scope", "tvProgramService", "$inter
       # set colour + reset badge
       chrome.browserAction.setBadgeBackgroundColor {color: [243,33,33,255]}
       chrome.browserAction.setBadgeText {text: "#{airingLength}"}
-      tvProgramService.airingToday().then (tvProgramsAiredToday) =>
-        airingLength = tvProgramsAiredToday.length
-        chrome.browserAction.setBadgeText {text: "#{tvProgramsAiredToday.length}"}# if tvProgramsAiredToday.length > 0
-  checkAiredTVPrograms()
+      tvProgramService.airingToday().then (tvProgramsAiringToday) =>
+        airingLength = tvProgramsAiringToday.length
+        chrome.browserAction.setBadgeText {text: "#{tvProgramsAiringToday.length}"}# if tvProgramsAiringToday.length > 0
+  checkAiringTVPrograms()
 
-  $interval (-> checkAiredTVPrograms()), 1000 * intervalInSeconds
+  $interval (-> checkAiringTVPrograms()), 1000 * intervalInSeconds
 ]

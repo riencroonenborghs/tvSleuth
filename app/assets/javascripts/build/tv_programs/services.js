@@ -167,6 +167,7 @@ app.service("tvProgramService", [
                   }
                 }
               }
+              console.debug(airing);
               return deferred.resolve(airing);
             };
           })(this));

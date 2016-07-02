@@ -17,7 +17,8 @@
           </md-button>
       </h3>
       <h2 ng-if="showEpisode">Season {{tvProgram.season}} Episode {{tvProgram.number}}: {{tvProgram.name}}</h2>
-      <p>{{tvProgram.show.summary | stripHTML}}</p>
+      <div ng-if="!showEpisode">{{tvProgram.show.summary | stripHTML}}</div>
+      <div ng-if="showEpisode">{{tvProgram.summary | stripHTML}}</div>
     </div>
   </md-list-item>
 </md-list>

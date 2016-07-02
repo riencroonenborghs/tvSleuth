@@ -27,12 +27,12 @@ app.controller("AppController", [
 
 app.controller("BackgroundAppController", [
   "$scope", "tvProgramService", "$interval", function($scope, tvProgramService, $interval) {
-    var airingLength, checkAiredTVPrograms, counter, halfHourInseconds, intervalInSeconds;
+    var airingLength, checkAiringTVPrograms, counter, halfHourInseconds, intervalInSeconds;
     airingLength = 0;
     halfHourInseconds = 1800;
     intervalInSeconds = 10;
     counter = (halfHourInseconds / intervalInSeconds) - 1;
-    checkAiredTVPrograms = function() {
+    checkAiringTVPrograms = function() {
       var r;
       ++counter;
       r = Math.floor((Math.random() * 255) + 1);
@@ -51,18 +51,18 @@ app.controller("BackgroundAppController", [
           text: "" + airingLength
         });
         return tvProgramService.airingToday().then((function(_this) {
-          return function(tvProgramsAiredToday) {
-            airingLength = tvProgramsAiredToday.length;
+          return function(tvProgramsAiringToday) {
+            airingLength = tvProgramsAiringToday.length;
             return chrome.browserAction.setBadgeText({
-              text: "" + tvProgramsAiredToday.length
+              text: "" + tvProgramsAiringToday.length
             });
           };
         })(this));
       }
     };
-    checkAiredTVPrograms();
+    checkAiringTVPrograms();
     return $interval((function() {
-      return checkAiredTVPrograms();
+      return checkAiringTVPrograms();
     }), 1000 * intervalInSeconds);
   }
 ]);

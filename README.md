@@ -31,6 +31,3 @@ The extension comes pre-built, but you can easily build it yourself. It uses `gu
 
 #### Search TV Programs
 ![Search](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/fc3f390e490af0b90172729c3e7cd55729fd6b89/screenshots/04-search.png "Search")
-
-#### Settings Screen
-![Settings](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/b6027175bcf6c4e65fca9407b719f6bd8b387eff/screenshots/05-settings.png "Settings")

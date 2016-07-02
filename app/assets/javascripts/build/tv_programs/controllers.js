@@ -51,7 +51,7 @@ app.controller("TVProgramsIndexController", [
 ]);
 
 app.controller("TVProgramsSearchController", [
-  "$scope", "$timeout", "theMovieDBAPI", "tvSleuthAPI", "tvMazeAPI", function($scope, $timeout, theMovieDBAPI, tvSleuthAPI, tvMazeAPI) {
+  "$scope", "$timeout", "tvSleuthAPI", "tvMazeAPI", function($scope, $timeout, tvSleuthAPI, tvMazeAPI) {
     $scope.model = {
       query: ""
     };

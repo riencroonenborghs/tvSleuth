@@ -3,50 +3,6 @@ var app,
 
 app = angular.module("tvPrograms.services", []);
 
-app.service("theMovieDBAPI", [
-  "$q", "$http", function($q, $http) {
-    return {
-      apiPath: "http://api.themoviedb.org/3",
-      search: function(query, page) {
-        if (page == null) {
-          page = 1;
-        }
-        return this._sendRequest(this.apiPath + "/search/tv?api_key=" + tvSleuth.theMovieDB.apiKey + "&query=" + query + "&page=" + page);
-      },
-      get: function(tvProgramID) {
-        return this._sendRequest(this.apiPath + "/tv/" + tvProgramID + "?api_key=" + tvSleuth.theMovieDB.apiKey);
-      },
-      airingToday: function(page) {
-        if (page == null) {
-          page = 1;
-        }
-        return this._sendRequest(this.apiPath + "/tv/airing_today?api_key=" + tvSleuth.theMovieDB.apiKey + "&page=" + page);
-      },
-      _sendRequest: function(url) {
-        var deferred, failure, options, success;
-        deferred = $q.defer();
-        options = {
-          method: "GET",
-          url: url,
-          headers: {
-            "Accept": "application/json"
-          }
-        };
-        success = (function(_this) {
-          return function(response) {
-            deferred.resolve(response.data);
-          };
-        })(this);
-        failure = function(response) {
-          deferred.reject(response.data);
-        };
-        $http(options).then(success, failure);
-        return deferred.promise;
-      }
-    };
-  }
-]);
-
 app.service("tvMazeAPI", [
   "$q", "$http", function($q, $http) {
     return {
@@ -140,7 +96,7 @@ app.service("tvSleuthAPI", [
 ]);
 
 app.service("tvProgramService", [
-  "theMovieDBAPI", "tvMazeAPI", "$q", function(theMovieDBAPI, tvMazeAPI, $q) {
+  "tvMazeAPI", "$q", function(tvMazeAPI, $q) {
     return {
       sortTVPrograms: function(list) {
         return list.sort(function(a, b) {
@@ -196,11 +152,14 @@ app.service("tvProgramService", [
       },
       airedToday: function() {
         var deferred;
+        console.debug("airedToday");
         deferred = $q.defer();
         this.loadTVPrograms(function(tvPrograms) {
+          console.debug("airedToday -- 1: " + tvPrograms.length);
           return tvMazeAPI.scheduleToday().then((function(_this) {
             return function(airedTVPrograms) {
               var aired, airedTVProgram, i, j, len, len1, tvProgram;
+              console.debug("airedToday -- 2: " + airedTVPrograms.length);
               aired = [];
               for (i = 0, len = airedTVPrograms.length; i < len; i++) {
                 airedTVProgram = airedTVPrograms[i];
@@ -211,6 +170,7 @@ app.service("tvProgramService", [
                   }
                 }
               }
+              console.debug("airedToday -- 3: " + aired.length);
               return deferred.resolve(aired);
             };
           })(this));

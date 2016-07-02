@@ -84,16 +84,20 @@ app.service "tvProgramService", [ "tvMazeAPI", "$q", (tvMazeAPI, $q) ->
           callback tvPrograms if callback
 
   airedToday: ->
+    console.debug "airedToday"
     deferred = $q.defer()
     # load saved tv programs
     @loadTVPrograms (tvPrograms) ->
+      console.debug "airedToday -- 1: #{tvPrograms.length}"
       tvMazeAPI.scheduleToday().then (airedTVPrograms) =>
+        console.debug "airedToday -- 2: #{airedTVPrograms.length}"
         # check if saved tv program aired today
         aired = []
         for airedTVProgram in airedTVPrograms
           for tvProgram in tvPrograms
             if tvProgram.show.id == airedTVProgram.show.id
               aired.push airedTVProgram
+        console.debug "airedToday -- 3: #{aired.length}"
         deferred.resolve aired
 
     deferred.promise

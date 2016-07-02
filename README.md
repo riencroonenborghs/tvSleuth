@@ -30,4 +30,4 @@ The extension comes pre-built, but you can easily build it yourself. It uses `gu
 ![List](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/2a2c3d41844aef02a80cc4a94ceaae747b305e8a/screenshots/03-list.png "List")
 
 #### Search TV Programs
-![Search](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/fc3f390e490af0b90172729c3e7cd55729fd6b89/screenshots/04-search.png "Search")
+![Search](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/4d41ba2ee3d6298b8e89bcc003df0835cf9578e1/screenshots/04-search.png "Search")

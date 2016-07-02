@@ -22,10 +22,10 @@
     <!-- build -->
     <script src="app/assets/javascripts/build/app.js"></script>
     <script src="app/assets/javascripts/build/controllers.js"></script>
-    <script src="app/assets/javascripts/build/settings/controllers.js"></script>
     <script src="app/assets/javascripts/build/tv_programs/controllers.js"></script>
     <script src="app/assets/javascripts/build/tv_programs/services.js"></script>
     <script src="app/assets/javascripts/build/tv_programs/directives.js"></script>
+    <script src="app/assets/javascripts/build/tv_programs/filters.js"></script>
 
     <!-- stylesheets -->
     <link rel="stylesheet" type="text/css" href="app/assets/stylesheets/app.css">
@@ -33,10 +33,6 @@
   </head>
   <body ng-app="tvSleuth" ng-controller="AppController">
     <ng-include src="'app/views/toolbar.html'"></ng-include>
-    <div id="loading-screen" ng-if="!theMovieDB.apiKey" layout="column" layout-align="center center">
-        <md-progress-circular md-diameter="80"></md-progress-circular>
-        <div id="message">Loading TV Programs</div>
-    </div>
     <md-content id="main" ng-view></md-content>
   </body>
 </html>

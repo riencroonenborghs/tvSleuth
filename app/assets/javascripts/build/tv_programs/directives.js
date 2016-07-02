@@ -27,6 +27,7 @@ app.directive("tvProgramsList", [
       restrict: "E",
       scope: {
         tvPrograms: "=",
+        showEpisode: "=?",
         canRemove: "=?",
         onRemove: "&?",
         canAdd: "=?",
@@ -35,6 +36,7 @@ app.directive("tvProgramsList", [
       templateUrl: "app/views/tv_programs/list.html",
       controller: [
         "$scope", function($scope) {
+          $scope.showEpisode || ($scope.showEpisode = false);
           $scope.add = function(tvProgram) {
             return $scope.onAdd({
               $tvProgram: tvProgram

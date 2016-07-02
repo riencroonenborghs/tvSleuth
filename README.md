@@ -19,10 +19,6 @@ The extension comes pre-built, but you can easily build it yourself. It uses `gu
 - point it to the extension (the folder with the manifest.json file)
 - click `Select`
 
-## Requirements
-
-You'll need an API key from https://www.themoviedb.org.
-
 ## Screenshots
 #### Icon & Badge
 ![Icon & Badge](https://raw.githubusercontent.com/riencroonenborghs/tvSleuth/48589ae3053b50c5c4ea6948cfbcb78401f19b0a/screenshots/01-icon-badge-title.png "Icon & Badge")

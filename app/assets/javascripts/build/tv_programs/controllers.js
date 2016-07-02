@@ -1,27 +1,45 @@
-var app;
+var app, tvSleuth;
 
 app = angular.module("tvPrograms.controllers", []);
 
-tvSleuth.tvPrograms = [];
+tvSleuth = {
+  tvPrograms: []
+};
 
 app.controller("TVProgramsIndexController", [
-  "$scope", "tvProgramService", "tvSleuthAPI", function($scope, tvProgramService, tvSleuthAPI) {
+  "$scope", "tvProgramService", "tvSleuthAPI", "$timeout", function($scope, tvProgramService, tvSleuthAPI, $timeout) {
     var loadTVPrograms;
     $scope.tvPrograms = [];
+    $scope.loading = true;
     loadTVPrograms = function() {
       var callback;
+      $scope.loading = true;
       callback = function(tvPrograms) {
         $scope.tvPrograms = tvPrograms;
         tvSleuth.tvPrograms = tvPrograms;
-        return tvProgramService.checkPrograms($scope.tvPrograms);
+        return $scope.loading = false;
       };
       return tvProgramService.loadTVPrograms(callback);
     };
     loadTVPrograms();
+    $timeout((function() {
+      return $scope.loading = false;
+    }), 2500);
     $scope.airedToday = [];
     $scope.airedTodayVisible = false;
+    chrome.browserAction.setBadgeBackgroundColor({
+      color: [243, 33, 33, 255]
+    });
+    chrome.browserAction.setBadgeText({
+      text: ""
+    });
     tvProgramService.airedToday().then(function(airedToday) {
-      return $scope.airedToday = airedToday;
+      $scope.airedToday = airedToday;
+      if (airedToday.length > 0) {
+        return chrome.browserAction.setBadgeText({
+          text: "" + airedToday.length
+        });
+      }
     });
     $scope.$on("reload.tvPrograms", function() {
       return loadTVPrograms();
@@ -33,62 +51,40 @@ app.controller("TVProgramsIndexController", [
 ]);
 
 app.controller("TVProgramsSearchController", [
-  "$scope", "$timeout", "theMovieDBAPI", "tvSleuthAPI", function($scope, $timeout, theMovieDBAPI, tvSleuthAPI) {
+  "$scope", "$timeout", "theMovieDBAPI", "tvSleuthAPI", "tvMazeAPI", function($scope, $timeout, theMovieDBAPI, tvSleuthAPI, tvMazeAPI) {
     $scope.model = {
       query: ""
     };
+    $scope.searching = false;
     $scope.service = {
-      page: 1,
       queryData: [],
       search: function() {
+        this.queryData = [];
         if ($scope.model.query === "") {
-          this.queryData = [];
           return;
         }
-        this.page = 1;
-        return theMovieDBAPI.search($scope.model.query, this.page).then((function(_this) {
+        $scope.searching = true;
+        return tvMazeAPI.search($scope.model.query).then((function(_this) {
           return function(data) {
-            var i, len, program, ref;
-            ref = data.results;
-            for (i = 0, len = ref.length; i < len; i++) {
-              program = ref[i];
-              program.inMyList = (function() {
-                var item, j, len1, ref1;
-                ref1 = tvSleuth.tvPrograms;
-                for (j = 0, len1 = ref1.length; j < len1; j++) {
-                  item = ref1[j];
-                  if (item.id === program.id) {
+            var i, len, results, tvProgram;
+            _this.queryData = data;
+            $scope.searching = false;
+            results = [];
+            for (i = 0, len = data.length; i < len; i++) {
+              tvProgram = data[i];
+              results.push(tvProgram.inMyList = (function() {
+                var item, j, len1, ref;
+                ref = tvSleuth.tvPrograms;
+                for (j = 0, len1 = ref.length; j < len1; j++) {
+                  item = ref[j];
+                  if (item.id === tvProgram.show.id) {
                     return true;
                   }
                 }
                 return false;
-              })();
+              })());
             }
-            return _this.queryData = data;
-          };
-        })(this));
-      },
-      searchNext: function() {
-        ++this.page;
-        return theMovieDBAPI.search($scope.model.query, this.page).then((function(_this) {
-          return function(data) {
-            var i, len, program, ref;
-            ref = data.results;
-            for (i = 0, len = ref.length; i < len; i++) {
-              program = ref[i];
-              program.inMyList = (function() {
-                var item, j, len1, ref1;
-                ref1 = tvSleuth.tvPrograms;
-                for (j = 0, len1 = ref1.length; j < len1; j++) {
-                  item = ref1[j];
-                  if (item.id === program.id) {
-                    return true;
-                  }
-                }
-                return false;
-              })();
-            }
-            return _this.queryData.results = _this.queryData.results.concat(data.results);
+            return results;
           };
         })(this));
       }

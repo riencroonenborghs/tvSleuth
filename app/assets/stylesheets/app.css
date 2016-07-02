@@ -9,6 +9,7 @@ html, body { min-width: 500px; }
 md-toolbar { position: fixed; }
 .md-subheader #aired-today { color: red; }
 #main { padding-top: 64px; }
+md-content { overflow: hidden; }
 
 /* override material default padding/margins */
 md-menu-item ng-md-icon { margin-left: 0; margin-right: 16px; }

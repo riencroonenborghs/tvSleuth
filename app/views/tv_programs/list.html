@@ -1,12 +1,12 @@
 <md-list>
-  <md-list-item class="md-2-line" ng-repeat="tvProgram in tvPrograms">
-    <img ng-src="https://image.tmdb.org/t/p/w185{{tvProgram.poster_path}}" class="md-avatar" alt="{{tvProgram.original_name}}" />
+  <md-list-item ng-class="{'md-2-line': !showEpisode, 'md-3-line': showEpisode}" ng-repeat="tvProgram in tvPrograms">
+    <img ng-src="{{tvProgram.show.image.medium}}" class="md-avatar" alt="{{tvProgram.show.name}}" />
     <div class="md-list-item-text" layout="column">
       <h3>
-        {{tvProgram.original_name}}
+        {{tvProgram.show.name}}
         <span class="stars">
           <ng-md-icon icon="star" size="16"></ng-md-icon>
-          {{tvProgram.popularity | number: 2}}
+          {{tvProgram.show.rating.average | number: 2}}
         </span>
         <md-button ng-if="canRemove" class="md-primary" aria-label="Remove from My List" ng-click="remove(tvProgram)">
           <ng-md-icon icon="remove_circle_outline"></ng-md-icon>
@@ -16,7 +16,8 @@
             <ng-md-icon icon="add_circle_outline"></ng-md-icon>
           </md-button>
       </h3>
-      <p>{{tvProgram.overview}}</p>
+      <h2 ng-if="showEpisode">Season {{tvProgram.season}} Episode {{tvProgram.number}}: {{tvProgram.name}}</h2>
+      <p>{{tvProgram.show.summary | stripHTML}}</p>
     </div>
   </md-list-item>
 </md-list>

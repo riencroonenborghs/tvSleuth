@@ -15,13 +15,15 @@ app.directive "tvProgramsList", [->
   restrict: "E"
   scope:
     tvPrograms: "="
+    showEpisode: "=?"
     canRemove: "=?"
     onRemove: "&?"
     canAdd: "=?"
     onAdd: "&?"
   templateUrl: "app/views/tv_programs/list.html"
   controller: ["$scope", ($scope)->
-    $scope.add    = (tvProgram) -> $scope.onAdd $tvProgram: tvProgram
-    $scope.remove = (tvProgram) -> $scope.onRemove $tvProgram: tvProgram
+    $scope.showEpisode  ||= false
+    $scope.add            = (tvProgram) -> $scope.onAdd $tvProgram: tvProgram
+    $scope.remove         = (tvProgram) -> $scope.onRemove $tvProgram: tvProgram
   ]
 ]

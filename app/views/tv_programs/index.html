@@ -2,22 +2,29 @@
   My TV Programs
 </md-subheader>
 
-<md-content layout-padding ng-if="airedToday.length">
-  <h3>Aired Today</h3>
-  <tv-programs-list tv-programs="airedToday"></tv-programs-list>
-</md-content>
-<md-divider ng-if="airedToday.length"></md-divider>
+<div id="loading-screen" ng-if="loading" layout="column" layout-align="center center">
+  <md-progress-circular md-diameter="80"></md-progress-circular>
+  <div id="message">Loading TV Programs</div>
+</div>
 
-<md-content layout-padding>
-  <p ng-if="!tvPrograms.length">You have no TV programs in your list.</p>
-</md-content>
+<div ng-if="!loading">
+  <md-content layout-padding ng-if="airedToday.length">
+    <h3>Aired Today</h3>
+    <tv-programs-list tv-programs="airedToday" show-episode="::true"></tv-programs-list>
+  </md-content>
+  <md-divider ng-if="airedToday.length"></md-divider>
 
-<md-content layout-padding ng-if="tvPrograms.length">  
-  <h3>
-    {{tvPrograms.length}}
-    <ng-pluralize count="tvPrograms.length" when="{'1':'TV program','other':'TV programs'}"></ng-pluralize>
-    in your list    
-  </h3>
+  <md-content layout-padding>
+    <p ng-if="!tvPrograms.length">You have no TV programs in your list.</p>
+  </md-content>
 
-  <tv-programs-list tv-programs="tvPrograms" can-remove="::true" on-remove="removeFromMyList($tvProgram)"></tv-programs-list>
-</md-content>
+  <md-content layout-padding ng-if="tvPrograms.length">  
+    <h3>
+      {{tvPrograms.length}}
+      <ng-pluralize count="tvPrograms.length" when="{'1':'TV program','other':'TV programs'}"></ng-pluralize>
+      in your list    
+    </h3>
+
+    <tv-programs-list tv-programs="tvPrograms" can-remove="::true" on-remove="removeFromMyList($tvProgram)"></tv-programs-list>
+  </md-content>
+</div>

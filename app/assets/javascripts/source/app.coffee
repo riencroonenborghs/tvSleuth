@@ -9,10 +9,10 @@ app = angular.module "tvSleuth", [
   "ngMdIcons",
   "ngRoute",
   "controllers",
-  "settings.controllers",
   "tvPrograms.controllers",
   "tvPrograms.services",
-  "tvPrograms.directives"
+  "tvPrograms.directives",
+  "tvPrograms.filters"
 ]
 
 app.config ($mdThemingProvider) ->

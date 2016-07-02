@@ -1,17 +1,25 @@
 app = angular.module "tvPrograms.services", []
 
-app.service "theMovieDBAPI", [ "$q", "$http", ($q, $http) ->
-  apiPath: "http://api.themoviedb.org/3"
-  search: (query, page = 1) -> @_sendRequest "#{@apiPath}/search/tv?api_key=#{tvSleuth.theMovieDB.apiKey}&query=#{query}&page=#{page}"
-  get: (tvProgramID) -> @_sendRequest "#{@apiPath}/tv/#{tvProgramID}?api_key=#{tvSleuth.theMovieDB.apiKey}"
-  airingToday: (page = 1) -> @_sendRequest "#{@apiPath}/tv/airing_today?api_key=#{tvSleuth.theMovieDB.apiKey}&page=#{page}"
+# http://www.tvmaze.com/api
+app.service "tvMazeAPI", [ "$q", "$http", ($q, $http) ->
+  apiPath: "http://api.tvmaze.com"
+  search: (query) -> @_sendRequest "#{@apiPath}/search/shows?q=#{query}"
+  shows: (id) -> @_sendRequest "#{@apiPath}/shows/#{id}"
+  schedule: (date) -> 
+    month         = date.getMonth()+1
+    day           = date.getDate()
+    isoDateString = [date.getFullYear()]
+    isoDateString.push(if month < 10 then "0#{month}" else month)
+    isoDateString.push(if day < 10 then "0#{day}" else day)
+    @_sendRequest "#{@apiPath}/schedule?date=#{isoDateString.join("-")}"
+  scheduleToday: -> @schedule(new Date())
   _sendRequest: (url) ->
     deferred = $q.defer()
     options = 
       method: "GET"
       url: url
-      headers:
-        "Accept": "application/json"
+      # headers:
+      #   "Accept": "application/json"
     success = (response) =>
       deferred.resolve response.data
       return
@@ -24,22 +32,24 @@ app.service "theMovieDBAPI", [ "$q", "$http", ($q, $http) ->
 
 app.service "tvSleuthAPI", [ "$rootScope", ($rootScope) ->
   addTVProgram: (tvProgram) ->
-    chrome.storage.local.get "tvSleuth", (data) ->      
+    chrome.storage.local.get "tvSleuth", (data) ->
       if data.tvSleuth
         data = JSON.parse data.tvSleuth
-        data.tvPrograms ||= []
-        data.tvPrograms.push tvProgram.id unless tvProgram.id in data.tvPrograms
-        data = JSON.stringify data
-        chrome.storage.local.set {tvSleuth: data}, (->
-          $rootScope.$broadcast "added.tvProgram"
-          $rootScope.$broadcast "reload.tvPrograms"
-        )
+        data.tvPrograms.push tvProgram.show.id unless tvProgram.show.id in data.tvPrograms
+      else
+        data = 
+          tvPrograms: [tvProgram.show.id]
+      data = JSON.stringify data
+      chrome.storage.local.set {tvSleuth: data}, (->
+        $rootScope.$broadcast "added.tvProgram"
+        $rootScope.$broadcast "reload.tvPrograms"
+      )
   removeTVProgram: (tvProgram) ->
     chrome.storage.local.get "tvSleuth", (data) ->      
       if data.tvSleuth
         data = JSON.parse data.tvSleuth
         data.tvPrograms ||= []
-        data.tvPrograms.splice(data.tvPrograms.indexOf(tvProgram.id)) if tvProgram.id in data.tvPrograms
+        data.tvPrograms.splice(data.tvPrograms.indexOf(tvProgram.show.id)) if tvProgram.show.id in data.tvPrograms
         data = JSON.stringify data
         chrome.storage.local.set {tvSleuth: data}, (->
           $rootScope.$broadcast "removed.tvProgram"
@@ -47,12 +57,12 @@ app.service "tvSleuthAPI", [ "$rootScope", ($rootScope) ->
         )
 ]
 
-app.service "tvProgramService", [ "theMovieDBAPI", "$q", (theMovieDBAPI, $q) ->
+app.service "tvProgramService", [ "tvMazeAPI", "$q", (tvMazeAPI, $q) ->
   sortTVPrograms: (list) ->
     list.sort (a,b) ->
-        if a.original_name < b.original_name
+        if a.show.name < b.show.name
           return -1
-        if a.original_name > b.original_name
+        if a.show.name > b.show.name
           return 1
         return 0
 
@@ -63,8 +73,13 @@ app.service "tvProgramService", [ "theMovieDBAPI", "$q", (theMovieDBAPI, $q) ->
         data        = JSON.parse data.tvSleuth
         tvPrograms  = []
         promises    = for id in (data.tvPrograms || [])
-          theMovieDBAPI.get(id)
+          tvMazeAPI.shows(id)
         Promise.all(promises).then (tvPrograms) =>
+          # puts all tvPrograms into {show: ...} hash
+          # for tvProgramsList to work
+          # (search uses same hash structure)
+          tvPrograms = for tvProgram in tvPrograms
+            {show: tvProgram}
           tvPrograms = @sortTVPrograms tvPrograms
           callback tvPrograms if callback
 
@@ -72,21 +87,14 @@ app.service "tvProgramService", [ "theMovieDBAPI", "$q", (theMovieDBAPI, $q) ->
     deferred = $q.defer()
     # load saved tv programs
     @loadTVPrograms (tvPrograms) ->
-      # list what's aired today
-      # get first page, from that repsonse get all other pages and pool responses
-      theMovieDBAPI.airingToday(1).then (firstPageResponse) =>
-        airedTVPrograms     = firstPageResponse.results
-        otherPagesPromises  = for _page in [2..firstPageResponse.total_pages]
-          theMovieDBAPI.airingToday(_page)
-        Promise.all(otherPagesPromises).then (otherPagesResponses) =>
-          for response in otherPagesResponses
-            airedTVPrograms = airedTVPrograms.concat response.results
-          # check if saved tv program aired today
-          aired = []
-          for airedTVProgram in airedTVPrograms
-            for tvProgram in tvPrograms
-              if tvProgram.id == airedTVProgram.id
-                aired.push airedTVProgram
-          deferred.resolve aired
+      tvMazeAPI.scheduleToday().then (airedTVPrograms) =>
+        # check if saved tv program aired today
+        aired = []
+        for airedTVProgram in airedTVPrograms
+          for tvProgram in tvPrograms
+            if tvProgram.show.id == airedTVProgram.show.id
+              aired.push airedTVProgram
+        deferred.resolve aired
+
     deferred.promise
 ]

@@ -7,7 +7,7 @@ html, body { min-width: 500px; }
 .stars { color: #2196f3; font-size: 85%; }
 
 md-toolbar { position: fixed; }
-.md-subheader #aired-today { color: red; }
+.md-subheader #airing-today { color: red; }
 #main { padding-top: 64px; }
 md-content { overflow: hidden; }
 

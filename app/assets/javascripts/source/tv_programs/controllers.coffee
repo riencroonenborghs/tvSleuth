@@ -24,13 +24,12 @@ app.controller "TVProgramsIndexController", ["$scope", "tvProgramService", "tvSl
     $scope.loading = false
   ), 2500
 
-  $scope.airedToday = []
-  $scope.airedTodayVisible = false
+  $scope.airingToday = []
   chrome.browserAction.setBadgeBackgroundColor {color: [243,33,33,255]}
   chrome.browserAction.setBadgeText {text: ""}
-  tvProgramService.airedToday().then (airedToday) -> 
-    $scope.airedToday = airedToday
-    chrome.browserAction.setBadgeText {text: "#{airedToday.length}"} if airedToday.length > 0
+  tvProgramService.airingToday().then (airingToday) -> 
+    $scope.airingToday = airingToday
+    chrome.browserAction.setBadgeText {text: "#{airingToday.length}"} if airingToday.length > 0
  
   $scope.$on "reload.tvPrograms", -> loadTVPrograms()
 

@@ -27,8 +27,8 @@ app.controller("AppController", [
 
 app.controller("BackgroundAppController", [
   "$scope", "tvProgramService", "$interval", function($scope, tvProgramService, $interval) {
-    var airedLength, checkAiredTVPrograms, counter, halfHourInseconds, intervalInSeconds;
-    airedLength = 0;
+    var airingLength, checkAiredTVPrograms, counter, halfHourInseconds, intervalInSeconds;
+    airingLength = 0;
     halfHourInseconds = 1800;
     intervalInSeconds = 10;
     counter = (halfHourInseconds / intervalInSeconds) - 1;
@@ -40,7 +40,7 @@ app.controller("BackgroundAppController", [
         color: [r, 33, 33, 255]
       });
       chrome.browserAction.setBadgeText({
-        text: "" + airedLength
+        text: "" + airingLength
       });
       if (counter === (halfHourInseconds / intervalInSeconds)) {
         counter === 0;
@@ -48,11 +48,11 @@ app.controller("BackgroundAppController", [
           color: [243, 33, 33, 255]
         });
         chrome.browserAction.setBadgeText({
-          text: "" + airedLength
+          text: "" + airingLength
         });
-        return tvProgramService.airedToday().then((function(_this) {
+        return tvProgramService.airingToday().then((function(_this) {
           return function(tvProgramsAiredToday) {
-            airedLength = tvProgramsAiredToday.length;
+            airingLength = tvProgramsAiredToday.length;
             return chrome.browserAction.setBadgeText({
               text: "" + tvProgramsAiredToday.length
             });

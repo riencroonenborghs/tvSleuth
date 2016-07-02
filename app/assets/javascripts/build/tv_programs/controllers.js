@@ -25,19 +25,18 @@ app.controller("TVProgramsIndexController", [
     $timeout((function() {
       return $scope.loading = false;
     }), 2500);
-    $scope.airedToday = [];
-    $scope.airedTodayVisible = false;
+    $scope.airingToday = [];
     chrome.browserAction.setBadgeBackgroundColor({
       color: [243, 33, 33, 255]
     });
     chrome.browserAction.setBadgeText({
       text: ""
     });
-    tvProgramService.airedToday().then(function(airedToday) {
-      $scope.airedToday = airedToday;
-      if (airedToday.length > 0) {
+    tvProgramService.airingToday().then(function(airingToday) {
+      $scope.airingToday = airingToday;
+      if (airingToday.length > 0) {
         return chrome.browserAction.setBadgeText({
-          text: "" + airedToday.length
+          text: "" + airingToday.length
         });
       }
     });

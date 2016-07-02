@@ -150,28 +150,24 @@ app.service("tvProgramService", [
           };
         })(this));
       },
-      airedToday: function() {
+      airingToday: function() {
         var deferred;
-        console.debug("airedToday");
         deferred = $q.defer();
         this.loadTVPrograms(function(tvPrograms) {
-          console.debug("airedToday -- 1: " + tvPrograms.length);
           return tvMazeAPI.scheduleToday().then((function(_this) {
-            return function(airedTVPrograms) {
-              var aired, airedTVProgram, i, j, len, len1, tvProgram;
-              console.debug("airedToday -- 2: " + airedTVPrograms.length);
-              aired = [];
-              for (i = 0, len = airedTVPrograms.length; i < len; i++) {
-                airedTVProgram = airedTVPrograms[i];
+            return function(airingTVPrograms) {
+              var airing, airingTVProgram, i, j, len, len1, tvProgram;
+              airing = [];
+              for (i = 0, len = airingTVPrograms.length; i < len; i++) {
+                airingTVProgram = airingTVPrograms[i];
                 for (j = 0, len1 = tvPrograms.length; j < len1; j++) {
                   tvProgram = tvPrograms[j];
-                  if (tvProgram.show.id === airedTVProgram.show.id) {
-                    aired.push(airedTVProgram);
+                  if (tvProgram.show.id === airingTVProgram.show.id) {
+                    airing.push(airingTVProgram);
                   }
                 }
               }
-              console.debug("airedToday -- 3: " + aired.length);
-              return deferred.resolve(aired);
+              return deferred.resolve(airing);
             };
           })(this));
         });

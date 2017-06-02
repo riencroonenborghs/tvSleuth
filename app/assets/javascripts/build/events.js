@@ -1,7 +1,7 @@
 var options;
 
 options = {
-  periodInMinutes: 1
+  periodInMinutes: 30
 };
 
 chrome.alarms.clear("tvSleuth");

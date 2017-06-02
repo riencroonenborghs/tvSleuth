@@ -83,11 +83,11 @@ app.service "tvProgramService", [ "tvMazeAPI", "$q", (tvMazeAPI, $q) ->
           tvPrograms = @sortTVPrograms tvPrograms
           callback tvPrograms if callback
 
-  airingToday: ->
+  airing: (date) ->
     deferred = $q.defer()
     # load saved tv programs
     @loadTVPrograms (tvPrograms) ->
-      tvMazeAPI.scheduleToday().then (airingTVPrograms) =>
+      tvMazeAPI.schedule(date).then (airingTVPrograms) =>
         # check if saved tv program airing today
         airing = []
         for airingTVProgram in airingTVPrograms
@@ -96,6 +96,8 @@ app.service "tvProgramService", [ "tvMazeAPI", "$q", (tvMazeAPI, $q) ->
               airing.push airingTVProgram
         console.debug airing
         deferred.resolve airing
-
     deferred.promise
+
+  airingToday: -> @airing new Date()
+  airedYesterday: -> @airing moment().subtract(1, "day").toDate()
 ]

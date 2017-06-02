@@ -150,11 +150,11 @@ app.service("tvProgramService", [
           };
         })(this));
       },
-      airingToday: function() {
+      airing: function(date) {
         var deferred;
         deferred = $q.defer();
         this.loadTVPrograms(function(tvPrograms) {
-          return tvMazeAPI.scheduleToday().then((function(_this) {
+          return tvMazeAPI.schedule(date).then((function(_this) {
             return function(airingTVPrograms) {
               var airing, airingTVProgram, i, j, len, len1, tvProgram;
               airing = [];
@@ -173,6 +173,12 @@ app.service("tvProgramService", [
           })(this));
         });
         return deferred.promise;
+      },
+      airingToday: function() {
+        return this.airing(new Date());
+      },
+      airedYesterday: function() {
+        return this.airing(moment().subtract(1, "day").toDate());
       }
     };
   }

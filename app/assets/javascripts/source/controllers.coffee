@@ -19,28 +19,29 @@ app.controller "AppController", ["$scope", "$location", "$timeout", "$mdToast",
   $scope.visit "/tv_programs"
 ]
 
-app.controller "BackgroundAppController", ["$scope", "tvProgramService", "$interval",
-($scope, tvProgramService, $interval) ->  
+app.controller "BackgroundAppController", ["$scope", "BackgroundApp", ($scope, BackgroundApp) ->
+  $scope.BackgroundApp = BackgroundApp
+]
+
+app.factory "BackgroundApp", [ "tvProgramService", (tvProgramService) ->
   airingLength      = 0
   halfHourInseconds = 1800
   intervalInSeconds = 10
   counter           = (halfHourInseconds / intervalInSeconds) - 1
-  
-  checkAiringTVPrograms = ->
-    ++counter
-    r = Math.floor((Math.random() * 255) + 1)        
-    chrome.browserAction.setBadgeBackgroundColor {color: [r,33,33,255]}
-    chrome.browserAction.setBadgeText {text: "#{airingLength}"}
 
-    if counter == (halfHourInseconds / intervalInSeconds)
-      counter == 0
-      # set colour + reset badge
-      chrome.browserAction.setBadgeBackgroundColor {color: [243,33,33,255]}
+  service:
+    checkAiringTVPrograms: ->
+      ++counter
+      r = Math.floor((Math.random() * 255) + 1)        
+      chrome.browserAction.setBadgeBackgroundColor {color: [r,33,33,255]}
       chrome.browserAction.setBadgeText {text: "#{airingLength}"}
-      tvProgramService.airingToday().then (tvProgramsAiringToday) =>
-        airingLength = tvProgramsAiringToday.length
-        chrome.browserAction.setBadgeText {text: "#{tvProgramsAiringToday.length}"}# if tvProgramsAiringToday.length > 0
-  checkAiringTVPrograms()
 
-  $interval (-> checkAiringTVPrograms()), 1000 * intervalInSeconds
+      if counter == (halfHourInseconds / intervalInSeconds)
+        counter == 0
+        # set colour + reset badge
+        chrome.browserAction.setBadgeBackgroundColor {color: [243,33,33,255]}
+        chrome.browserAction.setBadgeText {text: "#{airingLength}"}
+        tvProgramService.airingToday().then (tvProgramsAiringToday) =>
+          airingLength = tvProgramsAiringToday.length
+          chrome.browserAction.setBadgeText {text: "#{tvProgramsAiringToday.length}"}# if tvProgramsAiringToday.length > 0
 ]

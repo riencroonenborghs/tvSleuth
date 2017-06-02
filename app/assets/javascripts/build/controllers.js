@@ -26,43 +26,49 @@ app.controller("AppController", [
 ]);
 
 app.controller("BackgroundAppController", [
-  "$scope", "tvProgramService", "$interval", function($scope, tvProgramService, $interval) {
-    var airingLength, checkAiringTVPrograms, counter, halfHourInseconds, intervalInSeconds;
+  "$scope", "BackgroundApp", function($scope, BackgroundApp) {
+    return $scope.BackgroundApp = BackgroundApp;
+  }
+]);
+
+app.factory("BackgroundApp", [
+  "tvProgramService", function(tvProgramService) {
+    var airingLength, counter, halfHourInseconds, intervalInSeconds;
     airingLength = 0;
     halfHourInseconds = 1800;
     intervalInSeconds = 10;
     counter = (halfHourInseconds / intervalInSeconds) - 1;
-    checkAiringTVPrograms = function() {
-      var r;
-      ++counter;
-      r = Math.floor((Math.random() * 255) + 1);
-      chrome.browserAction.setBadgeBackgroundColor({
-        color: [r, 33, 33, 255]
-      });
-      chrome.browserAction.setBadgeText({
-        text: "" + airingLength
-      });
-      if (counter === (halfHourInseconds / intervalInSeconds)) {
-        counter === 0;
-        chrome.browserAction.setBadgeBackgroundColor({
-          color: [243, 33, 33, 255]
-        });
-        chrome.browserAction.setBadgeText({
-          text: "" + airingLength
-        });
-        return tvProgramService.airingToday().then((function(_this) {
-          return function(tvProgramsAiringToday) {
-            airingLength = tvProgramsAiringToday.length;
-            return chrome.browserAction.setBadgeText({
-              text: "" + tvProgramsAiringToday.length
+    return {
+      service: {
+        checkAiringTVPrograms: function() {
+          var r;
+          ++counter;
+          r = Math.floor((Math.random() * 255) + 1);
+          chrome.browserAction.setBadgeBackgroundColor({
+            color: [r, 33, 33, 255]
+          });
+          chrome.browserAction.setBadgeText({
+            text: "" + airingLength
+          });
+          if (counter === (halfHourInseconds / intervalInSeconds)) {
+            counter === 0;
+            chrome.browserAction.setBadgeBackgroundColor({
+              color: [243, 33, 33, 255]
             });
-          };
-        })(this));
+            chrome.browserAction.setBadgeText({
+              text: "" + airingLength
+            });
+            return tvProgramService.airingToday().then((function(_this) {
+              return function(tvProgramsAiringToday) {
+                airingLength = tvProgramsAiringToday.length;
+                return chrome.browserAction.setBadgeText({
+                  text: "" + tvProgramsAiringToday.length
+                });
+              };
+            })(this));
+          }
+        }
       }
     };
-    checkAiringTVPrograms();
-    return $interval((function() {
-      return checkAiringTVPrograms();
-    }), 1000 * intervalInSeconds);
   }
 ]);

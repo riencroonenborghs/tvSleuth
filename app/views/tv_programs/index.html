@@ -12,7 +12,12 @@
     <h3>Airing Today</h3>
     <tv-programs-list tv-programs="airingToday" show-episode="::true"></tv-programs-list>
   </md-content>
-  <md-divider ng-if="airingToday.length"></md-divider>
+  <md-content layout-padding ng-if="airedYesterday.length">
+    <h3>Aired Yesterday</h3>
+    <tv-programs-list tv-programs="airedYesterday" show-episode="::true"></tv-programs-list>
+  </md-content>
+
+  <md-divider ng-if="airingToday.length > 0 || airedYesterday.length > 0"></md-divider>
 
   <md-content layout-padding>
     <p ng-if="!tvPrograms.length">You have no TV programs in your list.</p>

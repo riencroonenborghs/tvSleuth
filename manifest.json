@@ -2,7 +2,7 @@
   "manifest_version" : 2,
   "name" : "TV Sleuth",
   "description" : "Keep track of aired TV programs",
-  "version" : "0.0.5",
+  "version" : "0.0.6",
   "browser_action" : {
     "default_icon" : "app/assets/images/app.png",
     "default_popup" : "app/views/app.html"
@@ -10,7 +10,8 @@
   "permissions" : [
     "activeTab",
     "storage",
-    "http://*/"
+    "http://*/",
+    "alarms"
   ],
   "background": {
     "page": "app/views/background.html",

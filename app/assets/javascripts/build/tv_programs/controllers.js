@@ -26,6 +26,7 @@ app.controller("TVProgramsIndexController", [
       return $scope.loading = false;
     }), 2500);
     $scope.airingToday = [];
+    $scope.airedYesterday = [];
     chrome.browserAction.setBadgeBackgroundColor({
       color: [243, 33, 33, 255]
     });
@@ -39,6 +40,9 @@ app.controller("TVProgramsIndexController", [
           text: "" + airingToday.length
         });
       }
+    });
+    tvProgramService.airedYesterday().then(function(airedYesterday) {
+      return $scope.airedYesterday = airedYesterday;
     });
     $scope.$on("reload.tvPrograms", function() {
       return loadTVPrograms();

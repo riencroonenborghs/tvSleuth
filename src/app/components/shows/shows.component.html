@@ -5,7 +5,13 @@
         mode="indeterminate">
     </mat-progress-spinner>
   </div>
-  <div *ngIf="!busy">
+  <div *ngIf="!busy && shows.length > 0">
     <app-show-details *ngFor="let show of shows" [show]="show"></app-show-details>
+  </div>
+  <div *ngIf="!busy && shows.length == 0" fxLayout="row" fxLayoutAlign="end center">
+    <p class="mat-h4">
+      Nothing to see yet. Maybe add some?
+      <mat-icon>call_made</mat-icon>
+    </p>
   </div>
 </div>

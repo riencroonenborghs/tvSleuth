@@ -13,7 +13,7 @@ import { Episode } from "@models/episode";
 export class BackgroundService {
 
   private _shows: Show[] = [];
-  private _maxDaysToGo = 100;
+  private _airingEpisodes = [];
 
   constructor(
     private _followService: FollowService,
@@ -23,9 +23,11 @@ export class BackgroundService {
 
   async load() {
     await this._loadShows();
-    let daysToGo = this._minDaysToWait();
-    if(daysToGo == this._maxDaysToGo) { return null; }
-    else { return daysToGo; }
+    this._showsAiringEpisodes();
+    const title = this._airingEpisodes.map((hash) => {
+      return `${hash.name} airs ${hash.when}`
+    }).join(", ");
+    return {total: this._airingEpisodes.length, title: title};
   }
 
   private async _loadShows() {
@@ -58,15 +60,36 @@ export class BackgroundService {
     }
   }
 
-  private _minDaysToWait() {
-    let daysToGo = this._maxDaysToGo;
+  private _showsAiringEpisodes() {
+    this._airingEpisodes = [];
     this._shows.forEach((show: Show) => {
       if(show.nextEpisode) {
-        if(show.nextEpisode.daysToGo < daysToGo) {
-          daysToGo = show.nextEpisode.daysToGo;
-        }
+        this._airingEpisodes.push({
+          name: show.name,
+          when: this._daysToHuman(show.nextEpisode.daysToGo)
+        });
       }
     });
-    return daysToGo;
+  }
+
+  private _daysToHuman(daysToGo: number) {
+    switch(daysToGo) {
+      case 0: {
+        return "today";
+        break;
+      }
+      case 1: {
+        return "tomorrow"
+        break;
+      }
+      case 2: {
+        return "day after tomorrow"
+        break;
+      }
+      default: {
+        return `in ${daysToGo} days`;
+        break;
+      }
+    }
   }
 }

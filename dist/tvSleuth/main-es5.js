@@ -2657,19 +2657,31 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     /* harmony import */
 
 
-    var _shows_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(
+    var _node_modules_angular_material_icon_typings_index_ngfactory__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(
+    /*! ../../../../node_modules/@angular/material/icon/typings/index.ngfactory */
+    "./node_modules/@angular/material/icon/typings/index.ngfactory.js");
+    /* harmony import */
+
+
+    var _angular_material_icon__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(
+    /*! @angular/material/icon */
+    "./node_modules/@angular/material/esm2015/icon.js");
+    /* harmony import */
+
+
+    var _shows_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(
     /*! ./shows.component */
     "./src/app/components/shows/shows.component.ts");
     /* harmony import */
 
 
-    var _services_api_tvmaze_show_api_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(
+    var _services_api_tvmaze_show_api_service__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(
     /*! ../../services/api/tvmaze-show-api.service */
     "./src/app/services/api/tvmaze-show-api.service.ts");
     /* harmony import */
 
 
-    var _services_api_tvmaze_episode_api_service__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(
+    var _services_api_tvmaze_episode_api_service__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(
     /*! ../../services/api/tvmaze-episode-api.service */
     "./src/app/services/api/tvmaze-episode-api.service.ts");
     /**
@@ -2747,10 +2759,36 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, null);
     }
 
+    function View_ShowsComponent_4(_l) {
+      return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 7, "div", [["fxLayout", "row"], ["fxLayoutAlign", "end center"]], null, null, null, null, null)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](1, 671744, null, 0, _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_2__["DefaultLayoutDirective"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"], _angular_flex_layout_core__WEBPACK_IMPORTED_MODULE_3__["StyleUtils"], [2, _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_2__["LayoutStyleBuilder"]], _angular_flex_layout_core__WEBPACK_IMPORTED_MODULE_3__["MediaMarshaller"]], {
+        fxLayout: [0, "fxLayout"]
+      }, null), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](2, 671744, null, 0, _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_2__["DefaultLayoutAlignDirective"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"], _angular_flex_layout_core__WEBPACK_IMPORTED_MODULE_3__["StyleUtils"], [2, _angular_flex_layout_flex__WEBPACK_IMPORTED_MODULE_2__["LayoutAlignStyleBuilder"]], _angular_flex_layout_core__WEBPACK_IMPORTED_MODULE_3__["MediaMarshaller"]], {
+        fxLayoutAlign: [0, "fxLayoutAlign"]
+      }, null), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](3, 0, null, null, 4, "p", [["class", "mat-h4"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵted"](-1, null, [" Nothing to see yet. Maybe add some? "])), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](5, 0, null, null, 2, "mat-icon", [["class", "mat-icon notranslate"], ["role", "img"]], [[2, "mat-icon-inline", null], [2, "mat-icon-no-color", null]], null, null, _node_modules_angular_material_icon_typings_index_ngfactory__WEBPACK_IMPORTED_MODULE_14__["View_MatIcon_0"], _node_modules_angular_material_icon_typings_index_ngfactory__WEBPACK_IMPORTED_MODULE_14__["RenderType_MatIcon"])), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](6, 9158656, null, 0, _angular_material_icon__WEBPACK_IMPORTED_MODULE_15__["MatIcon"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ElementRef"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_15__["MatIconRegistry"], [8, null], [2, _angular_material_icon__WEBPACK_IMPORTED_MODULE_15__["MAT_ICON_LOCATION"]], [2, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ErrorHandler"]]], null, null), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵted"](-1, 0, ["call_made"]))], function (_ck, _v) {
+        var currVal_0 = "row";
+
+        _ck(_v, 1, 0, currVal_0);
+
+        var currVal_1 = "end center";
+
+        _ck(_v, 2, 0, currVal_1);
+
+        _ck(_v, 6, 0);
+      }, function (_ck, _v) {
+        var currVal_2 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵnov"](_v, 6).inline;
+
+        var currVal_3 = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵnov"](_v, 6).color !== "primary" && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵnov"](_v, 6).color !== "accent" && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵnov"](_v, 6).color !== "warn";
+
+        _ck(_v, 5, 0, currVal_2, currVal_3);
+      });
+    }
+
     function View_ShowsComponent_0(_l) {
-      return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 4, "div", [["id", "shows"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵand"](16777216, null, null, 1, null, View_ShowsComponent_1)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](2, 16384, null, 0, _angular_common__WEBPACK_IMPORTED_MODULE_7__["NgIf"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"]], {
+      return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 6, "div", [["id", "shows"]], null, null, null, null, null)), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵand"](16777216, null, null, 1, null, View_ShowsComponent_1)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](2, 16384, null, 0, _angular_common__WEBPACK_IMPORTED_MODULE_7__["NgIf"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"]], {
         ngIf: [0, "ngIf"]
       }, null), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵand"](16777216, null, null, 1, null, View_ShowsComponent_2)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](4, 16384, null, 0, _angular_common__WEBPACK_IMPORTED_MODULE_7__["NgIf"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"]], {
+        ngIf: [0, "ngIf"]
+      }, null), (_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵand"](16777216, null, null, 1, null, View_ShowsComponent_4)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](6, 16384, null, 0, _angular_common__WEBPACK_IMPORTED_MODULE_7__["NgIf"], [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"], _angular_core__WEBPACK_IMPORTED_MODULE_1__["TemplateRef"]], {
         ngIf: [0, "ngIf"]
       }, null)], function (_ck, _v) {
         var _co = _v.component;
@@ -2758,19 +2796,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         _ck(_v, 2, 0, currVal_0);
 
-        var currVal_1 = !_co.busy;
+        var currVal_1 = !_co.busy && _co.shows.length > 0;
 
         _ck(_v, 4, 0, currVal_1);
+
+        var currVal_2 = !_co.busy && _co.shows.length == 0;
+
+        _ck(_v, 6, 0, currVal_2);
       }, null);
     }
 
     function View_ShowsComponent_Host_0(_l) {
-      return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 1, "app-shows", [], null, null, null, View_ShowsComponent_0, RenderType_ShowsComponent)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](1, 245760, null, 0, _shows_component__WEBPACK_IMPORTED_MODULE_14__["ShowsComponent"], [_services_persistence_follow_service__WEBPACK_IMPORTED_MODULE_11__["FollowService"], _services_api_tvmaze_show_api_service__WEBPACK_IMPORTED_MODULE_15__["TvmazeShowApiService"], _services_api_tvmaze_episode_api_service__WEBPACK_IMPORTED_MODULE_16__["TvmazeEpisodeApiService"], _services_follow_changed_service__WEBPACK_IMPORTED_MODULE_13__["FollowChangedService"]], null, null)], function (_ck, _v) {
+      return _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵvid"](0, [(_l()(), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵeld"](0, 0, null, null, 1, "app-shows", [], null, null, null, View_ShowsComponent_0, RenderType_ShowsComponent)), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵdid"](1, 245760, null, 0, _shows_component__WEBPACK_IMPORTED_MODULE_16__["ShowsComponent"], [_services_persistence_follow_service__WEBPACK_IMPORTED_MODULE_11__["FollowService"], _services_api_tvmaze_show_api_service__WEBPACK_IMPORTED_MODULE_17__["TvmazeShowApiService"], _services_api_tvmaze_episode_api_service__WEBPACK_IMPORTED_MODULE_18__["TvmazeEpisodeApiService"], _services_follow_changed_service__WEBPACK_IMPORTED_MODULE_13__["FollowChangedService"]], null, null)], function (_ck, _v) {
         _ck(_v, 1, 0);
       }, null);
     }
 
-    var ShowsComponentNgFactory = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵccf"]("app-shows", _shows_component__WEBPACK_IMPORTED_MODULE_14__["ShowsComponent"], View_ShowsComponent_Host_0, {}, {}, []);
+    var ShowsComponentNgFactory = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵccf"]("app-shows", _shows_component__WEBPACK_IMPORTED_MODULE_16__["ShowsComponent"], View_ShowsComponent_Host_0, {}, {}, []);
     /***/
 
   },
@@ -2802,7 +2844,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
      */
 
 
-    var styles = ["#shows[_ngcontent-%COMP%] {\n  padding-top: 58px;\n}\n\n#spinner[_ngcontent-%COMP%] {\n  width: 450px;\n  height: 500px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Wb2x1bWVzL1JlYWwgQ29kZS9wZXJzb25hbC90dlNsZXV0aC9zcmMvYXBwL2NvbXBvbmVudHMvc2hvd3Mvc2hvd3MuY29tcG9uZW50LnNhc3MiLCJzcmMvYXBwL2NvbXBvbmVudHMvc2hvd3Mvc2hvd3MuY29tcG9uZW50LnNhc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxpQkFBQTtBQ0NGOztBREFBO0VBQ0UsWUFBQTtFQUNBLGFBQUE7QUNHRiIsImZpbGUiOiJzcmMvYXBwL2NvbXBvbmVudHMvc2hvd3Mvc2hvd3MuY29tcG9uZW50LnNhc3MiLCJzb3VyY2VzQ29udGVudCI6WyIjc2hvd3NcbiAgcGFkZGluZy10b3A6IDU4cHhcbiNzcGlubmVyXG4gIHdpZHRoOiA0NTBweFxuICBoZWlnaHQ6IDUwMHB4IiwiI3Nob3dzIHtcbiAgcGFkZGluZy10b3A6IDU4cHg7XG59XG5cbiNzcGlubmVyIHtcbiAgd2lkdGg6IDQ1MHB4O1xuICBoZWlnaHQ6IDUwMHB4O1xufSJdfQ== */"];
+    var styles = ["#shows[_ngcontent-%COMP%] {\n  padding-top: 58px;\n}\n\n#spinner[_ngcontent-%COMP%] {\n  width: 450px;\n  height: 500px;\n}\n\np[_ngcontent-%COMP%] {\n  padding: 16px;\n  padding-right: 48px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi9Wb2x1bWVzL1JlYWwgQ29kZS9wZXJzb25hbC90dlNsZXV0aC9zcmMvYXBwL2NvbXBvbmVudHMvc2hvd3Mvc2hvd3MuY29tcG9uZW50LnNhc3MiLCJzcmMvYXBwL2NvbXBvbmVudHMvc2hvd3Mvc2hvd3MuY29tcG9uZW50LnNhc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxpQkFBQTtBQ0NGOztBREFBO0VBQ0UsWUFBQTtFQUNBLGFBQUE7QUNHRjs7QURGQTtFQUNFLGFBQUE7RUFDQSxtQkFBQTtBQ0tGIiwiZmlsZSI6InNyYy9hcHAvY29tcG9uZW50cy9zaG93cy9zaG93cy5jb21wb25lbnQuc2FzcyIsInNvdXJjZXNDb250ZW50IjpbIiNzaG93c1xuICBwYWRkaW5nLXRvcDogNThweFxuI3NwaW5uZXJcbiAgd2lkdGg6IDQ1MHB4XG4gIGhlaWdodDogNTAwcHhcbnBcbiAgcGFkZGluZzogMTZweFxuICBwYWRkaW5nLXJpZ2h0OiA0OHB4IiwiI3Nob3dzIHtcbiAgcGFkZGluZy10b3A6IDU4cHg7XG59XG5cbiNzcGlubmVyIHtcbiAgd2lkdGg6IDQ1MHB4O1xuICBoZWlnaHQ6IDUwMHB4O1xufVxuXG5wIHtcbiAgcGFkZGluZzogMTZweDtcbiAgcGFkZGluZy1yaWdodDogNDhweDtcbn0iXX0= */"];
     /***/
   },
 
@@ -4588,7 +4630,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         this._tvmazeShowApiService = _tvmazeShowApiService;
         this._tvmazeEpisodeApiService = _tvmazeEpisodeApiService;
         this._shows = [];
-        this._maxDaysToGo = 100;
+        this._airingEpisodes = [];
       }
 
       _createClass(BackgroundService, [{
@@ -4597,7 +4639,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0,
           /*#__PURE__*/
           regeneratorRuntime.mark(function _callee3() {
-            var daysToGo;
+            var title;
             return regeneratorRuntime.wrap(function _callee3$(_context3) {
               while (1) {
                 switch (_context3.prev = _context3.next) {
@@ -4606,19 +4648,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                     return this._loadShows();
 
                   case 2:
-                    daysToGo = this._minDaysToWait();
+                    this._showsAiringEpisodes();
 
-                    if (!(daysToGo == this._maxDaysToGo)) {
-                      _context3.next = 7;
-                      break;
-                    }
+                    title = this._airingEpisodes.map(function (hash) {
+                      return "".concat(hash.name, " airs ").concat(hash.when);
+                    }).join(", ");
+                    return _context3.abrupt("return", {
+                      total: this._airingEpisodes.length,
+                      title: title
+                    });
 
-                    return _context3.abrupt("return", null);
-
-                  case 7:
-                    return _context3.abrupt("return", daysToGo);
-
-                  case 8:
+                  case 5:
                   case "end":
                     return _context3.stop();
                 }
@@ -4749,19 +4789,49 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           }));
         }
       }, {
-        key: "_minDaysToWait",
-        value: function _minDaysToWait() {
-          var daysToGo = this._maxDaysToGo;
+        key: "_showsAiringEpisodes",
+        value: function _showsAiringEpisodes() {
+          var _this15 = this;
+
+          this._airingEpisodes = [];
 
           this._shows.forEach(function (show) {
             if (show.nextEpisode) {
-              if (show.nextEpisode.daysToGo < daysToGo) {
-                daysToGo = show.nextEpisode.daysToGo;
-              }
+              _this15._airingEpisodes.push({
+                name: show.name,
+                when: _this15._daysToHuman(show.nextEpisode.daysToGo)
+              });
             }
           });
+        }
+      }, {
+        key: "_daysToHuman",
+        value: function _daysToHuman(daysToGo) {
+          switch (daysToGo) {
+            case 0:
+              {
+                return "today";
+                break;
+              }
 
-          return daysToGo;
+            case 1:
+              {
+                return "tomorrow";
+                break;
+              }
+
+            case 2:
+              {
+                return "day after tomorrow";
+                break;
+              }
+
+            default:
+              {
+                return "in ".concat(daysToGo, " days");
+                break;
+              }
+          }
         }
       }]);
 
@@ -5047,13 +5117,13 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _inherits(FollowService, _services_persistence);
 
       function FollowService() {
-        var _this15;
+        var _this16;
 
         _classCallCheck(this, FollowService);
 
-        _this15 = _possibleConstructorReturn(this, _getPrototypeOf(FollowService).apply(this, arguments));
-        _this15.showIds = [];
-        return _this15;
+        _this16 = _possibleConstructorReturn(this, _getPrototypeOf(FollowService).apply(this, arguments));
+        _this16.showIds = [];
+        return _this16;
       }
 
       _createClass(FollowService, [{
@@ -5066,21 +5136,21 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "load",
         value: function load() {
-          var _this16 = this;
+          var _this17 = this;
 
           this._logService.log("FollowService -- loading");
 
           return new Promise(function (resolve, reject) {
-            _this16.loadData().then(function (data) {
+            _this17.loadData().then(function (data) {
               if (data) {
-                _this16.showIds = data.showIds;
+                _this17.showIds = data.showIds;
               } else {
-                _this16.showIds = [];
+                _this17.showIds = [];
               }
 
               resolve(true);
             }, function (error) {
-              _this16.showIds = [];
+              _this17.showIds = [];
               resolve(false);
             });
           });
@@ -5190,23 +5260,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       _createClass(PersistenceService, [{
         key: "saveData",
         value: function saveData(data) {
-          var _this17 = this;
+          var _this18 = this;
 
           this._logService.log("PersistenceService -- saving");
 
           return new Promise(function (resolve, reject) {
             try {
-              localStorage.setItem(_this17._storeKey, data);
+              localStorage.setItem(_this18._storeKey, data);
 
-              _this17._logService.log("PersistenceService -- saved");
+              _this18._logService.log("PersistenceService -- saved");
 
-              _this17._snackbarService.showSuccess("Saved!");
+              _this18._snackbarService.showSuccess("Saved!");
 
               resolve(true);
             } catch (_) {
-              _this17._logService.error("PersistenceService -- something went wrong");
+              _this18._logService.error("PersistenceService -- something went wrong");
 
-              _this17._snackbarService.showError("Bah, something went wrong :(");
+              _this18._snackbarService.showError("Bah, something went wrong :(");
 
               resolve(false);
             }
@@ -5215,23 +5285,23 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       }, {
         key: "loadData",
         value: function loadData() {
-          var _this18 = this;
+          var _this19 = this;
 
           this._logService.log("PersistenceService -- loading");
 
           return new Promise(function (resolve, reject) {
-            var storageData = localStorage.getItem(_this18._storeKey);
+            var storageData = localStorage.getItem(_this19._storeKey);
 
-            _this18._logService.log("PersistenceService -- from storage:");
+            _this19._logService.log("PersistenceService -- from storage:");
 
-            _this18._logService.log(storageData);
+            _this19._logService.log(storageData);
 
             if (storageData != null) {
-              _this18._logService.log("PersistenceService -- loaded");
+              _this19._logService.log("PersistenceService -- loaded");
 
               resolve(JSON.parse(storageData));
             } else {
-              _this18._logService.error("PersistenceService -- something went wrong");
+              _this19._logService.error("PersistenceService -- something went wrong");
 
               resolve(null);
             }

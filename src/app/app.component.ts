@@ -13,5 +13,6 @@ export class AppComponent {
   constructor(
     // for the chrome background script
     private backgroundService: BackgroundService
-  ) {}
+  ) {
+  }
 }

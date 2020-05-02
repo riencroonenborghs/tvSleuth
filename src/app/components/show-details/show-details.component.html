@@ -1,0 +1,31 @@
+<mat-card>
+  <mat-card-header>
+    <div mat-card-avatar [ngStyle]="avatar()"></div>
+    <mat-card-title>
+      <span>{{show.name}}</span>
+      <div class="rating" fxLayout="row" fxLayoutAlign="start center">
+        <mat-icon inline="true">grade</mat-icon> {{show.rating.average}} / 10
+      </div>
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{show.type}}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="show-summary" [innerHtml]="show.summary | striphtml | truncate:350"></div>
+    <div *ngIf="!manageable && (show.previousEpisode || show.nextEpisode)">
+      <mat-divider></mat-divider>
+      <app-episode [episode]="show.previousEpisode"></app-episode>
+      <mat-divider *ngIf="show.nextEpisode"></mat-divider>
+      <app-episode [episode]="show.nextEpisode" [next]="true"></app-episode>
+    </div>
+    
+  </mat-card-content>
+  <mat-card-actions *ngIf="manageable" fxLayout="row" fxLayoutAlign="end center">
+    <button *ngIf="!show.following" mat-button color="primary" (click)="follow()">FOLLOW</button>
+    <button *ngIf="show.following" mat-button color="primary" (click)="unfollow()">UNFOLLOW</button>
+  </mat-card-actions>
+  <mat-card-actions *ngIf="!manageable" fxLayout="row" fxLayoutAlign="end center">
+    <button mat-button color="primary" (click)="unfollow()">UNFOLLOW</button>
+  </mat-card-actions>
+</mat-card>

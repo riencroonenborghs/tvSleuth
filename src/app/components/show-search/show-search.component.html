@@ -1,0 +1,22 @@
+<h1 mat-dialog-title>
+  Add a show!
+</h1>
+
+<div mat-dialog-content>
+  <form>
+    <mat-form-field>
+      <input type="text"
+             placeholder="Search Show"
+             matInput 
+             [formControl]="searchFormControl">        
+    </mat-form-field>      
+  </form>
+
+  <div fxLayout="row wrap" *ngIf="shows.length > 0">
+    <app-show-details *ngFor="let show of shows" [show]="show.show" [manageable]="true"></app-show-details>
+  </div>
+</div>
+
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="end center">
+  <button mat-button color=primary [mat-dialog-close]>Done</button>
+</div>

@@ -1,0 +1,22 @@
+<div class="episode" [ngClass]="{previous: !next, next: next}" *ngIf="episode">
+  <div class="top" fxLayout="column">
+    <div class="mat-h4" *ngIf="!next">
+      <b>Last episode was</b>
+      {{episode.airdate | date: 'E dd LLLL yyyy'}}
+    </div>
+    <div class="mat-h4" *ngIf="next">
+      <b>New episode is in {{episode.daysToGo}} days on</b>
+      {{episode.airdate | date: 'E dd LLLL yyyy'}}
+    </div>
+    <div class="mat-h1">
+      S{{episode.season | number:'2.0'}}E{{episode.number | number:'2.0'}} - {{episode.name}}
+    </div>
+  </div>
+  <div class="content" fxLayout="row">
+    <div class="summary" fxFlex [innerHtml]="episode.summary">
+    </div>
+    <div class="image" *ngIf="episode.image && episode.image.medium" fxFlex="33">
+      <img [src]="episode.image.medium" />
+    </div>
+  </div>
+</div>

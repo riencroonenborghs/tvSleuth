@@ -1,0 +1,11 @@
+<div id="shows">
+  <div id="spinner" *ngIf="busy" fxLayout="row" fxLayoutAlign="center center">
+    <mat-progress-spinner
+        color="accent"
+        mode="indeterminate">
+    </mat-progress-spinner>
+  </div>
+  <div *ngIf="!busy">
+    <app-show-details *ngFor="let show of shows" [show]="show"></app-show-details>
+  </div>
+</div>

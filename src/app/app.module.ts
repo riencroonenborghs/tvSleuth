@@ -6,7 +6,7 @@ import { FormsModule } from "@angular/forms";
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgMasonryGridModule } from 'ng-masonry-grid';
 
-import { MatCardModule, MatToolbarModule, MatButtonModule, MatIconModule, MatGridListModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatSnackBarModule, MatDividerModule } from "@angular/material";
+import { MatCardModule, MatToolbarModule, MatButtonModule, MatIconModule, MatGridListModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatSnackBarModule, MatDividerModule, MatExpansionModule, MatBadgeModule } from "@angular/material";
 
 
 import { AppRoutingModule } from './app-routing.module';
@@ -54,7 +54,7 @@ import { EpisodeComponent } from './components/episode/episode.component';
     ReactiveFormsModule,
     FormsModule,
     NgMasonryGridModule,
-    MatCardModule, MatToolbarModule, MatButtonModule, MatIconModule, MatGridListModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatSnackBarModule, MatDividerModule
+    MatCardModule, MatToolbarModule, MatButtonModule, MatIconModule, MatGridListModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatProgressSpinnerModule, MatSnackBarModule, MatDividerModule, MatExpansionModule, MatBadgeModule
   ],
   providers: [EnvServiceProvider],
   bootstrap: [AppComponent],

@@ -76,6 +76,13 @@ export class Show {
     }
   }
 
+  get avatar() {
+    return {
+      "background-image": `url('${this.image.medium}')`,
+      "background-size": "cover"
+    }
+  }
+
   private _episodeId(episode: string) {
     const matches = episode.match(/episodes\/(\d+)/);
     return parseInt(matches[1]);

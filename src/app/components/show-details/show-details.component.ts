@@ -16,6 +16,7 @@ export class ShowDetailsComponent implements OnInit {
 
   @Input() show: Show;
   @Input() manageable: boolean = false;
+  @Input() style: string = "card";
 
   constructor(
     private _followService: FollowService,
@@ -24,13 +25,6 @@ export class ShowDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit() { }
-
-  avatar() {
-    return {
-      "background-image": `url('${this.show.image.medium}')`,
-      "background-size": "cover"
-    }
-  }
 
   follow() {
     this._followService.follow(this.show.id).then(

@@ -6,14 +6,13 @@
     </mat-progress-spinner>
   </div>
   <div *ngIf="!busy && shows.length > 0">
-    <mat-accordion multi>
+    <mat-accordion>
       <mat-expansion-panel *ngFor="let show of shows">
         <mat-expansion-panel-header>
           <mat-panel-title >
             <div class="avatar" [ngStyle]="show.avatar"></div>
-            <span *ngIf="show.nextEpisode" matBadge="{{show.nextEpisode.daysToGo}}" matBadgeSize="small">{{show.name}}</span>
-            <span *ngIf="!show.nextEpisode">{{show.name}}</span>
-
+            <span *ngIf="show.nextEpisode" matBadge="{{show.nextEpisode.daysToGo}}" matBadgeSize="small" matBadgeColor="accent">{{show.name}}</span>
+            <span *ngIf="!show.nextEpisode" class="title">{{show.name}}</span>
           </mat-panel-title>
           <mat-panel-description></mat-panel-description>
         </mat-expansion-panel-header>

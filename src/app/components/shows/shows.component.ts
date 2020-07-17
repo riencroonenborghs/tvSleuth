@@ -47,6 +47,7 @@ export class ShowsComponent implements OnInit {
         this._loadEpisode(show, "previousEpisode");
         this._loadEpisode(show, "nextEpisode");
         this.shows.push(show);
+      this._sortShows();
       });
       this._subs.push(sub);
     });
@@ -65,6 +66,12 @@ export class ShowsComponent implements OnInit {
   private _finished() {
     this._finishedSubs += 1;
     this.busy = this._subs.length != this._finishedSubs;
+  }
+
+  private _sortShows() {
+    this.shows = this.shows.sort((a, b) => {
+      return a.name.localeCompare(b.name);
+    });
   }
 
   ngOnDestroy() {

@@ -14,4 +14,4 @@ var load = function() {
 
 chrome.browserAction.setBadgeBackgroundColor({color: "#3f51b5"});
 setTimeout(load, 1000 * 5);
-setInterval(load, 1000 * 60 * 60 * 24);
+setInterval(load, 1000 * 60 * 60 * 1);

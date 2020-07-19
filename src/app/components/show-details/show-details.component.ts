@@ -18,6 +18,8 @@ export class ShowDetailsComponent implements OnInit {
   @Input() manageable: boolean = false;
   @Input() style: string = "card";
 
+  fullSummary = false;
+
   constructor(
     private _followService: FollowService,
     private _snackbarService: SnackbarService,
@@ -44,5 +46,9 @@ export class ShowDetailsComponent implements OnInit {
         this._followChangedService.changed();
       }
     );
+  }
+
+  toggleSummary() {
+    this.fullSummary = !this.fullSummary;
   }
 }

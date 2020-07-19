@@ -42,7 +42,14 @@
     {{show.type}}
   </div>
 
-  <div class="show-summary" [innerHtml]="show.summary | striphtml | truncate:350"></div>
+  <div class="show-summary" *ngIf="!fullSummary">
+    <div [innerHtml]="show.summary | striphtml | truncate:150"></div>
+    <button mat-button color="primary" (click)="toggleSummary()">More</button>
+  </div>
+  <div class="show-summary" *ngIf="fullSummary">
+    <div [innerHtml]="show.summary | striphtml"></div>
+    <button mat-button color="primary" (click)="toggleSummary()">Less</button>
+  </div>
 
   <div *ngIf="!manageable && (show.previousEpisode || show.nextEpisode)">
     <mat-divider></mat-divider>

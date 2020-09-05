@@ -26,7 +26,7 @@ export class Episode {
     this._airdate = date;
     let diff = dayjs(date).valueOf() - dayjs(new Date()).startOf('day').valueOf();
     diff = diff / (24 * 60 * 60 * 1000);
-    this.daysToGo = diff;
+    this.daysToGo = Math.floor(diff);
   }
 
   get airdate() { return this._airdate; }
